@@ -1,0 +1,29 @@
+Daft.Server 3.4 Release Notes
+
+
+Changes from Release 3.2:
+
+- Default username and default password no longer needed in web.xml
+- Servlet definition for UpdateServlet in web.xml should no longer reference UpdateServletNew class, but reverts to UpdateServlet class - see sample_web.xml
+
+- Preview service now supports image cropping (t=0, l=0, w=200, h=100) will give a non scaled crop form the top left corner of the image
+- Preview service supports replacing a preview in the preview cache for a record by specifyiny the url parameter "force"
+- Preview service supports replacing all previews for a record by specifying "clearcache" in the place of a preview name
+
+- New Asset service supports downloading of asset (http://myserver/asset/mycatalog/235/get will download the asset for asset with record id 235
+
+Bug Fixes:
+
+- Connection pool now correctly releases licenses on termination ot Tomcat
+- Extra licenses consumed by UpdateServlet now fixed
+
+Notes:
+
+When running on Snow Leopard, ensure Tomcat runs with JAVA_OPTS -d32 and java.awt.headless=true
+This ensures Tomcat runs in 32 bit mode, required as Cumulus native libraries are not yet 64 bit compatible.
+This also ensures that the Java ImageIO libraries run correctly on Mac OSX (not required for Windows).
+See the sample catalina.sh provided.
+
+The sample_web.xml also contains views that are useful for testing Woodwing Enterprise integration.
+Due to the way the Woddwing plug-in s work, it is necessary to have some conventions, so "views" in web.xml have their name prefixed with "woodwing_".
+ALso there is a special "view" named "woodwing_properties" which must exist to map onto Woodwing Enterprise meta data fields.

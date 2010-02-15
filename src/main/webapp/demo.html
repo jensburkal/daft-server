@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Daft.Server Upload Example</title>
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="./css/hr.css" />
+        <!--[if lte IE 7]><link rel="stylesheet" href="./css/ie.css" type="text/css" /><![endif]-->
+        <script type="text/javascript" src="./js/datetimepicker_css.js"></script>
+    </head>
+    <body>
+        <!--header-->
+        <div id="header" class="group"> <a href="#"><img src="gfx/logo.gif" width="139" height="83" alt="DAFT Solutions" /></a>
+            <ul>
+                <li class="first"><a href="./demo.html">Upload</a></li>
+                <li><a href="./gallery_1.html">Gallery 1</a></li>
+                <li><a href="./gallery_2.html">Gallery 2</a></li>
+                <li><a href="http://cumulus.daft-solutions.com" target="_blank">Cumulus</a></li>
+                <li><a href="http://www.daft-solutions.com">Daft Solutions</a></li>
+            </ul>
+        </div>
+        <!--/header-->
+        <!--site wrap-->
+        <div id="wrap">
+            <!--content-->
+            <div id="content">
+                <div class="bl">
+                    <div class="br">
+                        <div class="tl">
+                            <div class="tr">
+                                <!--introduction-->
+                                <div id="introduction" class="group"> <img src="./gfx/demo-intro.jpg" width="938" height="100" alt="Intro Image"/> </div>
+                                <!--/introduction-->
+                                <div width="400" lass="content">
+                                    <h1>Daft.Server Asset Uploading Example</h1>
+                                    <p>This page shows how the Daft:Server can used to upload images to Cumulus, via a simple HTML form.</p>
+                                    <p>Fill in the metadata fields, and choose some images from your computer to upload.</p>
+                                    <p>Demo is configured with Asset Handling Set that supports upload of common images such as JPEG, GIF, PNG; as well as some other document formats such as PDF.</p>
+                                </div>
+                                <div class="form">
+                                    <form action="http://macserver:8080/daft/upload/sample/upload_details?redirect=http://macserver:8080/daft/upload_done.html" enctype="multipart/form-data" method="post">
+                                        <h3>Enter photo information:</h3>
+                                        <fieldset>
+                                            <input class="formelement" type="hidden" name="asset-handling-set" value="daft-demo" />
+                                            <input class="formelement" type="hidden" name="preview:iphonesmall" value="type=ScaledBox,w=50,h=50"/>
+                                            <input class="formelement" type="hidden" name="preview:iphonemedium" value="type=MaxSize,size=200"/>
+                                            <input class="formelement" type="hidden" name="preview:gallerysmall" value="type=ScaledBox,w=60,h=56"/>
+                                            <input class="formelement" type="hidden" name="preview:gallerytip" value="type=MaxSize,size=180"/>
+                                        </fieldset>
+                                        <table>
+                                            <tr>
+                                                <td align="right" class="formlegend">Photographer:</td>
+                                                <td><input class="formelement" type="text" name="cumulus:Copyright_Notice" size="43" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">Date Taken:</td>
+                                                <td class="formlegend"><input class="formelement" type="text" id="date" name="cumulus:User Comment" size="10" />
+                                                    <a href="javascript:NewCssCal('date','ddmmyyyy')"><img src="./gfx/cal.gif" width="16" height="16" alt="Pick a date"/></a></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">Caption:</td>
+                                                <td><input class="formelement" type="text" name="cumulus:Caption" size="43" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">Byline:</td>
+                                                <td><input class="formelement" type="text" name="cumulus:Byline" size="43" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">Description:</td>
+                                                <td><input class="formelement" type="text" name="cumulus:Description" size="43" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend-top">Notes:</td>
+                                                <td><textarea class="formelement" name="cumulus:Notes" cols="33" rows="4"></textarea></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><h3 style="padding-top:8px">Select up to 2 files:</h3></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">File 1:</td>
+                                                <td><input class="formlegend" type="file" name="file_1" size="50" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" class="formlegend">File 2:</td>
+                                                <td><input class="formlegend" type="file" name="file_2" size="50" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" align="left"style="padding-top:6px"><input class="formelement button" type="submit" value="Upload Photos" /></td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-->
+        <div id="footer" class="group">
+            <ul>
+                <li>Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</li>
+            </ul>
+        </div>
+        <!--/footer-->
+    </body>
+</html>

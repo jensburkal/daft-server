@@ -1,0 +1,188 @@
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Daft Gallery Sample</title>
+        <link rel="stylesheet" type="text/css" href="css/hr.css" />
+        <link rel="stylesheet" type="text/css" href="css/tips.css" />
+        <style type="text/css">
+            #top_image { vertical-align:top; }
+            #top_image_picture { float:left; width:460px; height:460px; margin:0px; background-color:#000000; }
+            #gallery_images { float: left; width:460px;height:72px;margin-bottom:4px; background-color:#000000; }
+            #top_image_data { float:left; width:420px; margin-bottom:12px; }
+            #gallery_previous { float:left; }
+            #gallery_next { float:right; }
+            #gallery_select { width:120px; margin: 4px; }
+            #gallery_search { margin:4px; }
+            .gallery_image { width:60px; height:60px; margin: 2px; background-color:#dddddd; border-width:1px; border-style:solid; border-spacing:4px; border-color:#dddddd;}
+            .text_header { font-size:16px; }
+            .text_label { font-size:12px; font-style:normal; }
+            .q_label_highlight { color:#ff2222 }
+        </style>
+        <script type="text/javascript" src="./js/datetimepicker_css.js"></script>
+        <script src="./js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+        <script src="./js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+        <script src="./js/gallery.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="banner_front">
+            <table cellspacing="0" cellpadding="0" width="957">
+                <tr>
+                    <td valign="bottom">
+                        <table cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="3" valign="top" style="padding-top:4px;padding-bottom:30px;">
+                                    <div><span class="daft-brand">DAFT SOLUTIONS</span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="64" valign="bottom">
+                                    <div class="btn"><a href="./demo.html" class="stealth">UPLOAD</a></div>
+                                </td>
+                                <td width="84" valign="bottom">
+                                    <div class="btn_bk"><a href="./gallery.html" class="stealth">GALLERY</a></div>
+                                </td>
+                                <td width="100%"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <center>
+            <table width="957" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <div id="top_image">
+                            <form id="top_image_form" action="">
+                                <input id="top_image_id" type="hidden" name="top_image_id" value="330">
+                            </form>
+                            <table padding="4px">
+                                <tr>
+                                    <td style="vertical-align:top">
+                                        <div id="gallery_images">
+                                            <table>
+                                                <tr>
+                                                    <td><div id="gallery_previous"><img src="gfx/fleche1.png" alt="prev"/></div></td>
+                                                    <td><div id="gallery_image_1" class="gallery_image"></div><td>
+                                                    <td><div id="gallery_image_2" class="gallery_image"></div><td>
+                                                    <td><div id="gallery_image_3" class="gallery_image"></div><td>
+                                                    <td><div id="gallery_image_4" class="gallery_image"></div><td>
+                                                    <td><div id="gallery_image_5" class="gallery_image"></div><td>
+                                                    <td><div id="gallery_next"><img src="gfx/fleche2.png" alt="next"/></div></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="top_image_picture">
+                                        </div>
+                                    </td>
+                                    <td width="100%" style="vertical-align:top;background-color:#aaaaaa;padding:8px;">
+                                        <p id="top_metadata_header" class="text_header">Information</p>
+                                        <div id="top_image_data">
+                                            <table>
+                                                <tr><td><p class="text_label">Photographer:</p></td><td style="width:100%"><div id="cumulus:Copyright Notice" class="text_label"></div></td></tr>
+                                                <tr><td><p class="text_label">Date Taken:</p></td><td style="width:100%"><div id="cumulus:User Comment" class="text_label"></div></td></tr>
+                                                <tr><td><p class="text_label">Caption:</p></td><td style="width:100%"><div id="cumulus:Caption" class="text_label"></div></td></tr>
+                                                <tr><td><p class="text_label">Byline:</p></td><td style="width:100%"><div id="cumulus:Byline" class="text_label"></div></td></tr>
+                                                <tr><td><p class="text_label">Description:</p></td><td style="width:100%"><div id="cumulus:Description" class="text_label"></div></td></tr>
+                                                <tr><td><p class="text_label">Notes:</p></td><td style="width:100%;vertical-align:top;"><div id="cumulus:Notes" class="text_label"></div></td></tr>
+                                            </table>
+                                        </div>
+                                        <div id="gallery_query" style="clear:both; border-top:1px solid #dddddd;">
+                                            <p  id="headerQuery" class="text_header">Query</p>
+                                            <form action="" id="querySearch">
+                                                <table>
+                                                    <tr>
+                                                        <td id="q_month_label" class="text_label" width="80">Month:</td>
+                                                        <td width="150">
+                                                            <table>
+                                                                <tr>
+                                                                    <td>
+                                                                        <select id="q_month" class="formelement" name="dateMonth">
+                                                                            <option value="-1" SELECTED>----------
+                                                                            <option value="01">January
+                                                                            <option value="02">February
+                                                                            <option value="03">March
+                                                                            <option value="04">April
+                                                                            <option value="05">May
+                                                                            <option value="06">June
+                                                                            <option value="07">July
+                                                                            <option value="08">August
+                                                                            <option value="09">September
+                                                                            <option value="10">October
+                                                                            <option value="11">November
+                                                                            <option value="12">December
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select id="q_year" class="formelement" name="dateYear">
+                                                                            <option value="-1" SELECTED>----------
+                                                                            <option value="2009">2009
+                                                                            <option value="2010">2010
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="q_photographer_label" class="text_label" width="80">Photographer:</td>
+                                                        <td width="150">
+                                                            <table>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input id="q_photographer" class="formelement" type="text" id="date" name="cumulus:Copyright Notice" size="23">                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <input type="button" value="Go" onClick="doQuerySearch()">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </form>
+                                        </div>
+                                        <div id="gallery_quick_search" style="clear:both; border-top:1px solid #dddddd;">
+                                            <p id="headerQuickSearch" class="text_header">Quick Search</p>
+                                            <form action="" id="quickSearch">
+                                                <table>
+                                                    <tr>
+                                                        <td id="q_quick_search_label" class="text_label" width="80">Enter Text:</td>
+                                                        <td width="150">
+                                                            <input id="q_quick_search" class="formlegend" type="text" name="quick_search" size="70">
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <input type="button" value="Go" onClick="javascript:doQuickSearch()">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </form>
+                                        </div>
+                                        <div id="gallery_top_image" style="clear:both; border-top:1px solid #dddddd;">
+                                            <form action="" id="topImageSearch">
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <input type="button" value="Top Image" onClick="javascript:doTopImage()">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <table class="bottom" width="957" cellspacing="0" cellpadding="0">
+            <tr>
+                <td class="page-footer">Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</td>
+                <td align="right" class="formlegend">
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

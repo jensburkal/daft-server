@@ -1,0 +1,27 @@
+Daft.Server 3.5 Release Notes
+
+
+Changes from Release 3.4:
+
+- Categories and assets can be deleted (Warning: This is completly insecure, no authentication required - this is coming in a future version)
+- File monitor now supports the new preview types (max_size, scaled_box, cropped_box), and different preview formats (png, gif, jog)
+- Log file tidied up, much less debug information making log file easier to analyse
+- The sample web.xml file now only references standard fields in the Cumulus Sample Catalog, so is a good basis for a new installation.
+- The web app is tidied up, and has new sample web page to demonstrate uploading of assets via web page (demo.html)
+- A sample web page showing a simple Ajax style Gallery is included.
+
+Bug Fixes:
+
+- Connection pool now reconnects correctly if Cumulus connection lost, without need to restart Tomcat
+- Connection pool no longer loops infinately, generating huge log file if Cumulus connection lost
+- UploadServlet error when metadata sent but no file data, resulting in last field (Record Name by default) having a traiing "\n" - new line character
+- Windows file monitor now working again with updated Daft.Server (3.5)
+
+Notes:
+
+In sample_web.xml there is a new servlet, BozoServlet. This is experimental, and you do not need to deploy this for now.
+
+The sample web pages all reference the base url http://localhost:8083 ..., as does the gallery.js (in the js sub directory). You need to adapt
+this is you want to play with the demos.
+
+In the gallery.html sample web page the "Top Photo" id is embedded in the page (look for id "top_image_id" in the html, and set to an id you know is in your catalog)

@@ -1,0 +1,20 @@
+/* 
+Title:		IE specific styles for Daft Solutions
+Copyright:  Daft Solutions 2010
+*/
+
+#introduction {
+	overflow:hidden;
+}
+.intro-buttons em {
+	padding:15px 5px 0 5px;
+}
+
+/* self-clear floats */
+
+* html .group { /* IE6 */
+	height: 1%;
+}
+*:first-child+html .group { /* IE7 */
+	min-height: 1px;
+}

@@ -1,0 +1,52 @@
+Daft.Server 3.5.2 Release Notes
+
+This is primarily a bug fix release
+
+Changes from Release 3.5.1:
+
+- Pooling license count in web.xml now specified for each catalog as follows:
+    <context-param>
+        <param-name>catalog:colin-mobiledev:sample:demo:daft56:licenses=1:clones=3</param-name>
+        <param-value>sample-vault</param-value>
+    </context-param>
+
+- URLs can now be "cloaked". If a catalog is flagged as cloaked, then queries will return urls with no record id etc, so instead of:
+
+http://colin-mobiledev:8083/daft/preview/sample/412/colin27
+
+you get something like:
+
+http://colin-mobiledev:8083/daft/url/24076956f3cf0abacc4d25ac3af80b4b
+
+To support this, a new servlet needs to be defined in web.xml to support this:
+	<servlet>
+        <description>
+            Servlet for cloaking and shrinking URLs
+        </description>
+        <servlet-name>UrlServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.UrlServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+	 <servlet-mapping>
+        <servlet-name>UrlServlet</servlet-name>
+        <url-pattern>/url/*</url-pattern>
+    </servlet-mapping>
+
+
+- Upload servlet now supports preview generation in HTML forms. So if uploading via HTML, you can have named previews pre-generated as part of the upload process.
+
+For example in your HTML form, you can specify hidden input tags as follows:
+
+	<input class="formelement" type="hidden" name="preview:iphonesmall" value="type=ScaledBox,w=50,h=50">
+	<input class="formelement" type="hidden" name="preview:iphonemedium" value="type=MaxSize,size=200">
+	<input class="formelement" type="hidden" name="preview:iphonelarge" value="type=MaxSize,size=300">
+
+- Improvements to connection pooling, using more efficient queing mechanism, and also more efficient use of unlimited reads for Cumulus Enterprise server
+
+Bug Fixes:
+
+- Connection pooling no longer consumes an extra license when 0 pool licenses are specified
+- Previews sourced from images with alpha channel, CMYK etc now scale and crop correctly, with colours as in original
+
+Notes:
+

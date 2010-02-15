@@ -1,0 +1,457 @@
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Hurtigruten Photo Competition Gallery</title>
+        <link rel="stylesheet" type="text/css" href="css/hr.css" />
+        <style type="text/css">
+            #header { height:60px;}
+            #main { height:460px; overflow:auto;}
+            #top_image { vertical-align:top; }
+            #top_image_picture { float:left;width:420px; margin:12px; }
+            #top_image_data { float:left; width:420px; margin:12px; }
+            #myGallery { width: 420px; height: 420px;background-color:#000000}
+            #photo_header { margin:8px; height:60px; border-bottom: 1px solid #ffffff; }
+            #photo_title { padding:1px; font-size:14px; font-style:normal; color:#ffffff }
+            #photo_description { padding:1px; font-size:12px; font-style:normal; color:#ffffff }
+            .text_header { font-size:16px; }
+            .text_label { font-size:12px; font-style:normal; }
+            .q_label_highlight { color:#ff2222 }
+        </style>
+        <script type="text/javascript" src="../js/datetimepicker_css.js"></script>
+        <script src="js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+        <script src="js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var delay = 5000; // milliseconds
+            var p_from = 1;
+            var p_to = 100;
+            var p_first = Math.floor(Math.random()*(p_to+1));
+            var p_count = 25;
+            var baseUrl = 'http://localhost:8083/photocomp/metadata/photocat/galleryset/record_range';
+            var destinationBaseUrl = 'http://localhost:8083/photocomp/metadata/photocat/galleryset/find_destination';
+            var photographerBaseUrl = 'http://localhost:8083/photocomp/metadata/photocat/galleryset/find_photographer';
+            var countryBaseUrl = 'http://localhost:8083/photocomp/metadata/photocat/galleryset/find_country';
+            var shipBaseUrl = 'http://localhost:8083/photocomp/metadata/photocat/galleryset/find_ship';
+            var queryParams = { 'csharp': '', 'p_from': p_from, 'p_to': p_to, 'f': p_first, 'c': p_count };
+            var photos = null;
+            var request = null;
+            var currentPhoto = -1;
+            var clearGetPhotosId = -1;
+            var maxImageSize = 300;
+            var currentQLabel = null;
+            var requestCount = 0;
+
+            var getPhotos = function() {
+                requestCount++;
+                request.get(queryParams);
+            };
+
+            function initStuff() {
+                makeSimpleImageElement($('myGallery'));
+                request = new Request.JSON({
+                    url: baseUrl,
+                    method: 'get',
+                    onSuccess: function(responseJson) {
+                        doSuccess(responseJson);
+                        requestCount--;
+                    },
+                    onFailure: function() {
+                        requestCount--;
+                    }
+                });
+                p_first = doRandomize();
+                queryParams = { 'csharp': '', 'p_from': p_from, 'p_to': p_to, 'f': p_first, 'c': p_count };
+                getPhotos.run();
+                updatePhoto.delay(2000);
+                clearGetPhotosId = updatePhoto.periodical(delay, this);
+            }
+
+            function doSuccess(responseJson) {
+                photos = responseJson;
+                if (photos != null) {
+                    while (photos.length < p_count) {
+                        p_first -= p_count;
+                        if (p_first < 0) break;
+                        queryParams = { 'csharp': '', 'p_from': p_from, 'p_to': p_to, 'f': p_first, 'c': p_count };
+                        getPhotos.delay(500);
+                    }
+                }
+                else {
+                    queryParams = { 'csharp': '', 'p_from': p_from, 'p_to': p_to, 'f': p_first, 'c': p_count };
+                    getPhotos.delay(500);
+                }
+            }
+
+            function doRandomize() {
+                result = Math.floor(Math.random()*(p_to+1));
+                var n = (new Date()).getSeconds();
+                if (n % 2 == 0) {
+                    result = result - n + p_to;
+                }
+                else {
+                    result = result + n - p_to;
+                }
+                if (result + p_count > p_to) {
+                    result = p_to - p_count;
+                }
+                if (result < 0) result = 0;
+
+                return result;
+            }
+
+            function Dimension(width, height) {
+                this.width = width;
+                this.height = height;
+            }
+
+            function Box(top, left, width, height) {
+                this.top = top;
+                this.left = left;
+                this.width = width;
+                this.height = height;
+            }
+
+            function scaleImage(w, h) {
+                var result = new Dimension(maxImageSize, maxImageSize);
+                if (w > h) {
+                    result.width = maxImageSize;
+                    result.height = parseInt(parseFloat(maxImageSize) * parseFloat(h/w));
+                } else if (h > w) {
+                    resultheight = maxImageSize;
+                    resultwidth = parseInt(parseFloat(maxImageSize) * parseFloat(w/h));
+                }
+                return result;
+            }
+
+            function updatePhoto() {
+                if (requestCount > 0) return; // prevent problems with asynchronout updates
+                if (photos == null || photos.length == 0) {
+                    currentPhoto = -1;
+                    $('photo_title').set('html', 'Photographer: ');
+                    $('photo_description').set('html', 'Caption: ');
+                    $('photo_medium').set('src', 'gfx/loading-bar-black.gif');
+                    //$('photo_medium').setStyles({width: dimension.width, height: dimension.height, top: -(dimension.height/2),'margin-left':-(dimension.width/2)});
+                    updatePhotoMetadata();
+                }
+                else {
+                    currentPhoto++;
+                    if (currentPhoto >= (photos.length)) {
+                        currentPhoto = 0;
+                    }
+                    try {
+                        var photo = photos[currentPhoto];
+                        if (photo != null) {
+                            $('photo_title').set('html', 'Photographer: '+((photo.Copyright_Notice != null) ? photo.Copyright_Notice : ''));
+                            $('photo_description').set('html', 'Caption: '+((photo.Caption != null) ? photo.Caption : ''));
+                            $('photo_medium').set('src', photo.preview_slidemed+':'+maxImageSize);
+                            var dimension = scaleImage(photo.Image_Width, photo.Image_Height);
+                            $('photo_medium').setStyles({width: dimension.width, height: dimension.height, top: -(dimension.height/2),'margin-left':-(dimension.width/2)});
+                            updatePhotoMetadata();
+                        }
+                    }
+                    catch (err) {
+                        // do nothing, just go on
+                    }
+                }
+            }
+
+            function updatePhotoMetadata() {
+                if (currentPhoto < 0) {
+                    try {
+                        $('cumulus:Copyright Notice').set('html', "");
+                        $('cumulus:Age').set('html', "");
+                        $('cumulus:Country').set('html', "");
+                        $('cumulus:Special Instructions').set('html', "");
+                        $('cumulus:Byline Title').set('html', "");
+                        $('cumulus:Headline').set('html', "");
+                        $('cumulus:Byline').set('html', "");
+                    }
+                    catch (err) {
+                        // do nothing, just go on
+                    }
+                }
+                else {
+                    try {
+                        var photo = photos[currentPhoto];
+                        $('cumulus:Copyright Notice').set('html', (photo.Copyright_Notice != null) ? photo.Copyright_Notice : "");
+                        $('cumulus:Age').set('html', (photo.Age != null) ? photo.Age : "");
+                        $('cumulus:Country').set('html', (photo.Country != null) ? photo.Country : "");
+                        $('cumulus:Special Instructions').set('html', (photo.Special_Instructions != null) ? photo.Special_Instructions : "");
+                        $('cumulus:Byline Title').set('html', (photo.Byline_Title != null) ? photo.Byline_Title : "");
+                        $('cumulus:Headline').set('html', (photo.Headline != null) ? photo.Headline : "");
+                        $('cumulus:Byline').set('html', (photo.Byline != null) ? photo.Byline : "");
+                    }
+                    catch (err) {
+                        // do nothing, just go on
+                    }
+                }
+            }
+
+            function makeSimpleImageElement(parentElement) {
+                var headerElement = new Element('div', {id: 'photo_header'}).inject(parentElement);
+                var bodyElement = new Element('div', {id: 'photo_body'}).inject(parentElement);
+                bodyElement.setStyles({ margin: 12, position: 'relative', top: '160px', height: '1px', overflow: 'visible'});
+                new Element('span', {id: 'photo_title'}).inject(new Element('p').inject(headerElement));
+                new Element('span', {id: 'photo_description'}).inject(new Element('p').inject(headerElement));
+                //var centerElement = new Element('center').inject(bodyElement);
+                var mediumImage = new Element('img', {id: 'photo_medium', src:'gfx/loading-bar-black.gif'}).inject(bodyElement);
+                mediumImage.setStyles({ position: 'absolute', left: '50%', width:'220', height:'20', top: -10,'margin-left':-110});
+            }
+
+            window.addEvent("domready", initStuff);
+
+            function highlightQLabel(labelElement) {
+                if (currentQLabel != null) currentQLabel.removeClass("q_label_highlight");
+                currentQLabel = labelElement;
+                currentQLabel.addClass("q_label_highlight");
+            }
+
+            function findByDestination() {
+                var destination = $('q_destination').getSelected()[0].getProperty('value');
+                highlightQLabel($('q_destination_label'));
+                request = new Request.JSON({
+                    url: destinationBaseUrl,
+                    method: 'get',
+                    onSuccess: function(responseJson) {
+                        doSuccess(responseJson);
+                        requestCount--;
+                    },
+                    onFailure: function() {
+                        requestCount--;
+                    }                });
+                p_first = 0;
+                queryParams = { 'csharp': '', 'p1': destination, 'f': p_first, 'c': p_count };
+                getPhotos.run();
+                ok = updatePhoto.delay(1000);
+                if (clearGetPhotosId > 0) $clear(clearGetPhotosId);
+                clearGetPhotosId = updatePhoto.periodical(delay, this);
+            }
+
+            function findByPhotographer() {
+                var photographer = $('q_photographer').value;
+                highlightQLabel($('q_photographer_label'));
+                request = new Request.JSON({
+                    url: photographerBaseUrl,
+                    method: 'get',
+                    onSuccess: function(responseJson) {
+                        doSuccess(responseJson);
+                        requestCount--;
+                    },
+                    onFailure: function() {
+                        requestCount--;
+                    }
+                });
+                p_first = 0;
+                queryParams = { 'csharp': '', 'p1': photographer, 'f': p_first, 'c': p_count };
+                getPhotos.run();
+                ok = updatePhoto.delay(1000);
+                if (clearGetPhotosId > 0) $clear(clearGetPhotosId);
+                clearGetPhotosId = updatePhoto.periodical(delay, this);
+            }
+
+            function findByCountry() {
+                var country = $('q_country').value;
+                highlightQLabel($('q_country_label'));
+                request = new Request.JSON({
+                    url: countryBaseUrl,
+                    method: 'get',
+                    onSuccess: function(responseJson) {
+                        doSuccess(responseJson);
+                        requestCount--;
+                    },
+                    onFailure: function() {
+                        requestCount--;
+                    }                });
+                p_first = 0;
+                queryParams = { 'csharp': '', 'p1': country, 'f': p_first, 'c': p_count };
+                getPhotos.run();
+                ok = updatePhoto.delay(1000);
+                if (clearGetPhotosId > 0) $clear(clearGetPhotosId);
+                clearGetPhotosId = updatePhoto.periodical(delay, this);
+            }
+
+            function findByShip() {
+                var ship = $('q_ship').value;
+                highlightQLabel($('q_ship_label'));
+                request = new Request.JSON({
+                    url: shipBaseUrl,
+                    method: 'get',
+                    onSuccess: function(responseJson) {
+                        doSuccess(responseJson);
+                        requestCount--;
+                    },
+                    onFailure: function() {
+                        requestCount--;
+                    }                });
+                p_first = 0;
+                queryParams = { 'csharp': '', 'p1': ship, 'f': p_first, 'c': p_count };
+                getPhotos.run();
+                ok = updatePhoto.delay(1000);
+                if (clearGetPhotosId > 0) $clear(clearGetPhotosId);
+                clearGetPhotosId = updatePhoto.periodical(delay, this);
+            }
+
+        </script>
+    </head>
+    <body>
+        <div id="header" class="logos">
+            <img src="gfx/title.png"/>
+        </div>
+        <div id="main">
+            <center>
+                <table width="957" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td valign="bottom">
+                            <table cellspacing="0" cellpadding="0" height="30">
+                                <tr>
+                                    <td width="64" valign="bottom">
+                                        <div class="btn"><a href="index.html" class="stealth">HOME</a></div>
+                                    </td>
+                                    <td width="94" valign="bottom">
+                                        <div class="btn_bk">SLIDE SHOW</div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="top_image">
+                                <div id="top_image_picture">
+                                    <div id="myGallery" style="visibility:visible;background-color:#000000">
+                                    </div>
+                                </div>
+                                <div id="top_image_data">
+                                    <p id="top_metadata_header" class="text_header">Image Information</p>
+                                    <table>
+                                        <tr><td><p class="text_label">Photographer:</p></td><td style="width:100%"><div id="cumulus:Copyright Notice" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Age:</p></td><td style="width:100%"><div id="cumulus:Age" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Country:</p></td><td style="width:100%"><div id="cumulus:Country" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Date:</p></td><td style="width:100%"><div id="cumulus:Special Instructions" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Destination:</p></td><td style="width:100%"><div id="cumulus:Byline Title" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Location:</p></td><td style="width:100%"><div id="cumulus:Headline" class="text_label"></div></td></tr>
+                                        <tr><td><p class="text_label">Ship:</p></td><td style="width:100%"><div id="cumulus:Byline" class="text_label"></div></td></tr>
+                                    </table>
+                                    <p id="top_metadata_header" class="text_header">Queries</p>
+                                    <table>
+                                        <tr>
+                                            <td colspan="2"><h3></h3></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form action="" id="findByPhotographerForm">
+                                                    <table>
+                                                        <tr>
+                                                            <td id="q_photographer_label" align="right" class="formlegend" width="80">Photographer:</td>
+                                                            <td width="200">
+                                                                <input id ="q_photographer" class="formlegend" type="text" name="photographer" size="43">
+                                                            </td>
+                                                            <td width="100">
+                                                                <input type="button" value="Refresh" onClick="javascript:findByPhotographer()">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form action="" id="findByCountryForm">
+                                                    <table>
+                                                        <tr>
+                                                            <td  id="q_country_label" class="formlegend" width="80">Country:</td>
+                                                            <td width="200">
+                                                                <input id ="q_country" class="formlegend" type="text" name="country" size="43">
+                                                            </td>
+                                                            <td width="100">
+                                                                <input type="button" value="Refresh" onClick="javascript:findByCountry()">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form action="" id="findByDestinationForm">
+                                                    <table>
+                                                        <tr>
+                                                            <td  id="q_destination_label" class="formlegend" width="80">Destination:</td>
+                                                            <td width="200">
+                                                                <select id="q_destination" class="formelement" name="cumulus:Byline Title">
+                                                                    <option SELECTED>Choose destination
+                                                                    <option value="Norway">Norway
+                                                                    <option value="Spitsbergen">Spitsbergen
+                                                                    <option value="Greenland">Greenland
+                                                                    <option value="Antarctic">Antarctic
+                                                                    <option value="Europe sailings">Europe sailings
+                                                                </select>
+                                                            </td>
+                                                            <td width="100">
+                                                                <input type="button" value="Refresh" onClick="javascript:findByDestination()">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <form action="" id="findByShipForm">
+                                                    <table>
+                                                        <tr>
+                                                            <td id="q_ship_label" class="formlegend" width="80">Ship:</td>
+                                                            <td width="200">
+                                                                <select id="q_ship" class="formelement" name="cumulus:Byline" width="70">
+                                                                    <option SELECTED>Choose ship
+                                                                    <option value="MS Midnatsol">MS Midnatsol
+                                                                    <option value="MS Trollfjord">MS Trollfjord
+                                                                    <option value="MS Finnmarken">MS Finnmarken
+                                                                    <option value="MS Nordnorge">MS Nordnorge
+                                                                    <option value="MS Polarlys">MS Polarlys
+                                                                    <option value="MS Nordlys">MS Nordlys
+                                                                    <option value="MS Kong Harald">MS Kong Harald
+                                                                    <option value="MS Nordkapp">MS Nordkapp
+                                                                    <option value="MS Richard With">MS Richard With
+                                                                    <option value="MS VesterÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥len">MS VesterÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥len
+                                                                    <option value="MS Nordstjernen">MS Nordstjernen
+                                                                    <option value="MS Lofoten">MS Lofoten
+                                                                    <option value="MS Fram">MS Fram
+                                                                    <option value="MV Polarstar">MV Polarstar
+                                                                    <option value="MV Expedition">MV Expedition
+                                                                </select>
+                                                            </td>
+                                                            <td width="100">
+                                                                <input type="button" value="Refresh" onClick="javascript:findByShip()">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><h3></h3></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+        <div id="footer">
+            <table class="bottom" width="957" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td colspan="2"><hr></td>
+                </tr>
+                <tr>
+                    <td>Hurtigruten ASA  |  Besøksadresse:: Havnegata 2, Postboks 43, 8514 Narvik | Booking: +47 810 03 030|  Telefon: +47 76 96 76 00 | Telefax: +47 76 96 76 01</td>
+                    <td align="right" class="formlegend">
+                        <a href="terms.html" class="terms">TERMS & CONDITIONS</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

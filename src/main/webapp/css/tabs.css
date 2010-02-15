@@ -1,0 +1,9 @@
+#category_tabs {background-color:#e7e7e7; position:relative; height:500px; width:200px; margin-bottom:10px; float:left; }
+#category_tabs_upload {background-color:#e7e7e7; position:relative; height:380px; width:220px; margin-bottom:10px; float:left; }
+.feature { height:500px; position:absolute; width:200px; overflow:auto; margin-top:6px}
+.feature_upload { height:380px; position:absolute; width:220px; overflow:auto; margin-top:6px}
+.feature img { border:none; }
+#tabs { margin-left:0;margin-bottom:2px}
+#tabs li {background-color:transparent;display:inline;float:none;list-style:none; }
+#tabs li a {background-color:#eedddd; color:#333333; display:inline; height:auto;padding:5px 16px;text-decoration:none;width:auto;font-size: 0.9em}
+#tabs li a.active { background-color:#e7e7e7;color:#000000; }
