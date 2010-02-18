@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Daft.Server Noosh Integration Testing</title>
+        <link rel="stylesheet" type="text/css" href="./css/hr.css" />
+        <script type="text/javascript" src="./js/datetimepicker_css.js"></script>
+    </head>
+    <body>
+        <div class="banner_front">
+            <table cellspacing="0" cellpadding="0" width="957">
+                <tr>
+                    <td valign="bottom">
+                        <table cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="3" valign="top" style="padding-top:4px;padding-bottom:30px;">
+                                    <div><span class="daft-brand">DAFT SOLUTIONS</span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="64" valign="bottom">
+                                    <div class="btn_bk"><a href="./demo.html" class="stealth">UPLOAD</a></div>
+                                </td>
+                                <td width="84" valign="bottom">
+                                    <div class="btn"><a href="./gallery.html" class="stealth">GALLERY</a></div>
+                                </td>
+                                <td width="100%"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <center>
+            <table width="957" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="480" class="content" style="padding-top:8px">
+                       <h1>Noosh integration testing</h1>
+                       <p></p>
+                       <p></p>
+                    </td>
+                    <td class="form"  style="padding-top:8px;">
+                        <form action="http://colin-mobiledev:8083/daft/noosh/project/create?redirect=http://colin-mobiledev:8083/daft/noosh_done.html" enctype="multipart/form-data" method="post">
+                            <h3>Enter project information:</h3>
+                             <table>
+                                <tr>
+                                    <td align="right" class="formlegend">Name:</td>
+                                    <td><input class="formelement" type="text" name="noosh:ProjectName" size="43"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="formlegend">Description:</td>
+                                    <td><input class="formelement" type="text" name="noosh:ProjectDescription" size="43"></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="formlegend">User:</td>
+                                    <td>
+                                        <select id="n_project_identity" class="formelement" name="noosh:ProjectIdentity">
+                                           <option value="pointdxtestuser" SELECTED>Test User
+                                        </select>
+			            </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="formlegend">Start Date:</td>
+                                    <td class="formlegend"><input class="formelement" type="text" id="date" name="noosh:Program_Start_date:dateTime" size="10"><a href="javascript:NewCssCal('date','yyyymmdd')">&nbsp;<img src="./gfx/cal.gif" border="0" width="16" height="16" alt="Select start date"></a>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="formlegend">Color:</td>
+                                    <td>
+                                        <select id="n_color_str" class="formelement" name="noosh:Color_str:string">
+                                           <option value="RGB" SELECTED>RGB
+                                           <option value="CMYK">CMYK
+                                       </select>
+												</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="formlegend">Budget Line:</td>
+                                    <td><input class="formelement" type="text" name="noosh:Budget_Line_str:string" size="43"></td>
+                                </tr>
+                               <tr>
+                                    <td colspan="2" align="left"style="padding-top:6px"><input class="formelement" type="submit" value="Create Project"></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <table class="bottom" width="957" cellspacing="0" cellpadding="0">
+            <tr>
+                <td class="page-footer">Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</td>
+                <td align="right" class="formlegend">
+                </td>
+            </tr>
+        </table>
+    </body>

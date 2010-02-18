@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+<title>PDO Demonstration</title>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="./css/hr.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="./css/gallery.css" />
+<link rel="stylesheet" type="text/css" media="screen"  href="css/slimbox.css"/>
+<link rel="stylesheet" type="text/css" media="screen"  href="css/tree/mif-tree.css"/>
+<link rel="stylesheet" type="text/css" media="screen"  href="css/tabs.css"/>
+<!--[if lte IE 7]><link rel="stylesheet" href="./css/ie.css" type="text/css" /><![endif]-->
+<script src="./js/datetimepicker_css.js" type="text/javascript"></script>
+<script src="./js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+<script src="./js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+<script src="./js/rotater.js" type="text/javascript"></script>
+<script src="./js/tabs.js" type="text/javascript"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Node.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Selection.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Hover.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Load.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Draw.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Transform.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Sort.js"></script>
+<script src="./js/slimbox.js" type="text/javascript"></script>
+<script type="text/javascript" src="./js/pdo.js"></script>
+<script type="text/javascript" >
+window.addEvent("domready", initSearchStuff);
+</script>
+</head>
+<body>
+<!--header-->
+<div id="header" class="group"> <a href="#"><img src="gfx/logo.gif" width="139" height="83" alt="DAFT Solutions" /></a>
+  <ul>
+  <!--
+    <li class="first"><a href="./demo.html">Upload</a></li>
+    <li><a href="http://cumulus.daft-solutions.com" target="_blank">Cumulus</a></li>
+	 -->
+    <li><a href="http://www.daft-solutions.com">Daft Solutions</a></li>
+  </ul>
+</div>
+<!--/header-->
+<!--site wrap-->
+<div id="wrap">
+  <!--content-->
+  <div id="content">
+    <div class="bl">
+      <div class="br">
+        <div class="tl">
+          <div class="tr">
+            <!--introduction-->
+            <div id="introduction" class="group"> <img src="./gfx/pdo.jpg" width="938" height="100" alt="Intro Image"/> </div>
+            <!--/introduction-->
+            <table width="938" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="930" class="content">
+                  <div class="form_pdo_search" style="width:930px;margin-bottom:10px;">
+                     <span class="h3_pdo_search">Search</span>
+                     <span><input id="q_quick_search" class="formlegend" type="text" name="quick_search" size="120"/></span>
+ 						</div>
+						<ul id="tabs">
+							<li><a class="tab" href="#" id="one">Categories</a></li>
+							<li><a class="tab" href="#" id="two">Keywords</a></li>
+						</ul>
+						<div id='category_tabs'>
+						   <div class='feature'>
+								<div id="categoryTree"></div>
+							</div>
+						   <div class='feature'>
+								<div id="keywordTree"></div>
+							</div>
+						</div>
+                  <div id='gallery' style='width:730px;float:left;'>
+ 							<center>
+							   <ul id="page_navigator" style="height:25px">
+								</ul>
+							</center>
+						   <ul id="gallery_images" class="thumbwrap">
+							   <li id="gallery_image_1" style="visibility:hidden;"></li>
+							   <li id="gallery_image_2" style="visibility:hidden;"></li>
+							   <li id="gallery_image_3" style="visibility:hidden;"></li>
+							   <li id="gallery_image_4" style="visibility:hidden;"></li>
+							   <li id="gallery_image_5" style="visibility:hidden;"></li>
+							   <li id="gallery_image_6" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_7" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_8" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_9" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_10" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_11" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_12" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_13" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_14" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_15" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_16" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_17" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_18" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_19" style="visibility:hidden;"></li>
+ 							   <li id="gallery_image_20" style="visibility:hidden;"></li>
+  							   <li id="gallery_image_21" style="visibility:hidden;"></li>
+  							   <li id="gallery_image_22" style="visibility:hidden;"></li>
+  							   <li id="gallery_image_23" style="visibility:hidden;"></li>
+  							   <li id="gallery_image_24" style="visibility:hidden;"></li>
+                    </ul>
+						</div>
+ 					 </td>
+               </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--footer-->
+<div id="footer" class="group">
+  <ul>
+    <li>Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</li>
+  </ul>
+</div>
+<!--/footer-->
+</body>
+</html>

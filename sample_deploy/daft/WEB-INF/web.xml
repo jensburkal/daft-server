@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- Servlet Context Parameters
+         These parameters are accessible by all servlets in the application (i.e. this instance of the Daft.Server
+         web application.
+
+         In general, these parameters are processed by the Cumulus Helper Servlet (see below), which then passes them to the backing bean
+         as a set of properties.
+    -->
+    <context-param>
+        <description>
+           Set the default DAM to be used, which will be used when no dam parameter is specified in URLs
+        </description>
+        <param-name>default-dam</param-name>
+        <param-value>cumulus</param-value>
+    </context-param>
+    <context-param>
+        <description>
+           Configure a mail server - more than one mail server can be configured, each with its own alias
+			  value should be: account-name:account-password:sntpserver:sntp-port
+        </description>
+        <param-name>mail-account:daft-google</param-name>
+        <param-value>support.daft@googlemail.com:abc:smpt.gmail.com:587</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            A default Cumulus asset handling set to use in case an asset handling set is not specified in methods which require
+            an asset handling set (e.g. "create asset").
+        </description>
+        <param-name>cumulus-asset-handling-set</param-name>
+        <param-value>daft-demo</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            The name of a tempory directory to be used by the application when it needs to create temporary files. Good practice is for
+            this directory to be on the same physical computer as the appliction - not a network drive (or performance for certain actions
+            will be seriously degraded).
+
+            Note it is your responsibility to ensure this directory has write access to the Tomcat application.
+
+            Note that this directory will be created on application startup if it does not exist. Various methods also check for the existence
+            of ths directory when required, and will try to create it if missing.
+        </description>
+        <param-name>temp-dir</param-name>
+        <param-value>/usr/local/daft/tmp</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            The directory where preview cache files are stored.  Good practice is for
+            this directory to be on the same physical computer as the appliction - not a network drive (sort of defeates the purpose of having
+            a cache to put it on a network drive!).
+
+            Note it is your responsibility to ensure this directory has write access to the Tomcat application.
+
+            Note that this directory will be created on application startup if it does not exist. Various methods also check for the existence
+            of ths directory when required, and will try to create it if missing.
+        </description>
+        <param-name>cache-dir</param-name>
+        <param-value>/usr/local/daft/cache-previews</param-value>
+    </context-param>
+    <context-param>
+        <description>One of: 'develop', 'test', 'production'
+            develop: installation is being used for development, and can access 'describe' etc.
+            test: testing, some development features open
+        production: no development features available</description>
+        <param-name>deploy-mode</param-name>
+        <param-value>develop</param-value>
+    </context-param>
+    <!-- define some catalog connections -->
+    <context-param>
+        <description>
+            Catalog parameters define Cumulus connections, including the catalog name, username and password. An alias is specified
+            which is used in URLs to refer to the catalog. Therefore it is never required to pass usernames and passwords in URLS.
+
+            You can define as many catalog connections as you like. Each must have a different alias name.
+
+            The pattern is as follows:
+            param-name: catalog:server:alias:username:password[:secure]
+            param-value: the name of the Cumulus catalog
+        </description>
+        <param-name>catalog:macserver:sample:demo:daft56:licenses=0:clones=5:cloak</param-name>
+        <param-value>Sample Catalog</param-value>
+    </context-param>
+    <context-param>
+        <param-name>catalog:macserver:sample-vault:demo:daft56:licenses=1:clones=3</param-name>
+        <param-value>Sample Catalog Vault</param-value>
+    </context-param>
+    <context-param>
+        <param-name>catalog:macserver:point-production:point:point56:licenses=1:clones=3</param-name>
+        <param-value>Point Production</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            Define a "database view" containing a list of fields that are to be returned if a requesting URL specifies
+            the given view.
+
+            Views are made up of a list of Cumulus field names, separated by ":" character (so field names cannot contain ":" character,
+            (which of course they should not for good practice anyway).
+
+            Views can also contain "virtual fields", which result in URLs that can be used to get further information or data about records
+            returned by a query. In particar, virtual fields are used to refernce a Cumulut thimbnail, a named preview (via the Preview Servlet)
+            or another view defined for the Metadata Servlet.
+
+            Note: Daft assumes that you have defined the referenced fields in the relevant Cumulus catalogs. Daft does not check this, and you
+            cannot expect useful results if this is not the case. Also it is your responsibility that the users specified in various catalog
+            definitions have access to these fields.
+            param-name: view:catalog:name defines a name for the view to be used in URLs for catalog "catalog" - i.e. the catalog alias specieied eralier
+            param-value: field-1:field_2:...field_n:url_preview_name:...:url_metadata_name
+
+            Note: a special case allows for the definition of all fields with the name "all" - future projections for XMP, IPTC etc may be supported
+
+            Note: a special case allows the "catalog" name to be "all" and so the view applies to all catalogs. Care must be taken to ensure
+            all catalogs contain the specified fields, or the behaviour is not specified. Also if "all:all" is used, this assumes that all catalogs have the
+            exact same fields defined or again the results may be unpredictable - use "all:all" with care.
+
+            Note: best practice is to define specific views for specific purposes.
+        </description>
+        <param-name>view:all:overview</param-name>
+        <param-value>Record Name:Description:Thumbnail:url_metadata_details</param-value>
+    </context-param>
+    <context-param>
+        <description>A sample view returning some more details about an asset</description>
+        <param-name>view:all:details</param-name>
+        <param-value>Record Name:Asset Creation Date:Description:Notes:Copyright Notice:Caption:Byline:User Comment:Status:url_preview_full:url_metadata_assetusage</param-value>
+    </context-param>
+    <context-param>
+        <description>A sample view used to upload metadata - should not contain urls</description>
+        <param-name>view:all:upload_details</param-name>
+        <param-value>Record Name:Asset Creation Date:Description:Notes:Copyright Notice:Caption:Byline:User Comment:Status</param-value>
+    </context-param>
+    <context-param>
+        <description>A sample view used in the sample gallery_x.html web pages</description>
+        <param-name>view:all:gallery_view</param-name>
+        <param-value>Description:Notes:Copyright Notice:Caption:Byline:User Comment:Horizontal Pixels:Vertical Pixels:Status:url_preview_gallerytip:url_preview_gallerysmall:url_preview_topphoto</param-value>
+    </context-param>
+    <!-- some demo stuff -->
+    <context-param>
+        <param-name>view:all:pdo_view</param-name>
+        <param-value>Record Name:Description:Notes:Copyright Notice:Caption:Byline:User Comment:Horizontal Pixels:Vertical Pixels:url_preview_pdosmall:url_preview_pdobig</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view:all:mandela_view</param-name>
+        <param-value>Record Name:Description:Notes:Copyright Notice:Caption:Byline:User Comment:Horizontal Pixels:Vertical Pixels:url_preview_mandelasmall:url_preview_mandelabig</param-value>
+    </context-param>
+    <!--
+Views for Woodwing integration. Must start with "woodwing-" and
+recomment to include the catalog alias as Content Station does not let us
+build hierarchical menus for selection via the plugin interface.
+
+A special view called "woodwing-properties" should be defined to map onto
+Woodwing fields. This view will not show up in selection lists in the UI. Also for now, do not change this view, as as the integration hard codes these fields for now. Thie view should be defined for "all" catalogs, and so
+for now uses standard Cumulus fields. Other views can show custom fields.
+
+Hopefully future Woodwing plugin architecture will be more flexible in what it provides for us.
+-->
+    <context-param>
+        <description>a view that defines fields to map onto Wiidwing Enterprise metadata fields</description>
+        <param-name>view:all:woodwing_properties</param-name>
+        <param-value>Record Name:Description:File Format:File Data Size:Horizontal Pixels:Vertical Pixels:Horizontal Resolution:Vertical Resolution:Asset Creation Date:Asset Modification Date:Author:Byline:Byline Title:Caption:Caption Writer:Color Space:Copyright Notice:Copyright Applied:Keywords:Urgency:Rating</param-value>
+    </context-param>
+    <context-param>
+        <description>a view returning some basic data for Woodwing integration - colums to view in Content Station</description>
+        <param-name>view:sample:woodwing_sample_overview</param-name>
+        <param-value>Record Name:Description:Notes</param-value>
+    </context-param>
+    <!--
+        iPhone application testing
+        -->
+    <context-param>
+        <description>For use with sample iPhone application</description>
+        <param-name>view:sample:iphone</param-name>
+        <param-value>Record Name:File Format:Caption:Description:Notes:url_preview_iphonesmall:url_preview_iphonemedium:url_preview_iphonelarge</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            The url to the web application root, prepended to auto generated URLs
+        </description>
+        <param-name>baseurl</param-name>
+        <param-value>http://macserver:8080/daft</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            The name of the servlet mapping used to access previews via auto generated URLs.
+            This must match the servlet-mapping for the Preview Servlet, or the generated URLs won't work
+        </description>
+        <param-name>servlet-mapping-preview</param-name>
+        <param-value>preview</param-value>
+    </context-param>
+    <context-param>
+        <description>
+            The name of the servlet mapping used to access previews via auto generated URLs.
+            This must match the servlet-mapping for the Metadata Servlet, or the generated URLs won't work
+        </description>
+        <param-name>servlet-mapping-metadata</param-name>
+        <param-value>metadata</param-value>
+    </context-param>
+    <!-- Listeners -->
+    <!-- Servlet Definitions -->
+    <servlet>
+        <description>
+            This servlet performs varions initialisation tasks, in particular processing the context parameters and initialising the
+            backing bean. This servlet must be loaded before other application servlets.
+
+            This servlet is never invoked externally, and so there should not be any servlet mapping defined.
+        </description>
+        <servlet-name>DamHelperServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.DamHelperServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <description>
+            Provides a RESTful webservice capability to store and retrieve named previews to and from Cumulus.
+            There are a variety of possible ways to use this servlet. The most common usage is to embed the URLs in a HTML "&lt;img&gt;" tag.
+            Typically a query is made that will retrieve the URLS (see Metadata Servlet virtual URL fields for more details).
+        </description>
+        <servlet-name>PreviewServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.PreviewServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+        <init-param>
+            <description>
+                Define a field alias that can be used in URLs. A field alias is a simple name that maps onto a Cumulus field name
+                The param name is of the form "field:name" - where "name" is the alias to appear in URLs
+                The param value is the name of the relevant Cumulus field.
+
+                Example usage:
+                paran-name: field:product
+                param-value: Product Id
+                http://myserver:8083/DaftServer/preview/mycatalog/product/AB123/small
+                This URL returns a "small" preview for an asset in "mycatalog" whose Cumulus field "Product Id" is "AB123"
+            </description>
+            <param-name>field:id</param-name>
+            <param-value>ID</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <!--
+         Example use cases (see below for definitions that make these URLs work):
+         http://myserver:8083/DaftServer/metadata/sample-catalog/overview/record_range?p_from=1&p_to=500
+         ::: return all records in the "Daft Sample Catalog" catalog with record ids between 1 and 500 (inclusive)
+
+         http://myserver:8083/OtecEnterprise/metadata/sample-catalog/overview/record_range?p_from=1&p_to=500&f=1&c=10
+         ::: return 10 records in the "Daft Sample Catalog" catalog with record ids between 1 and 500 (inclusive), starting at the first record found
+
+         http://myserver:8083/OtecEnterprise/metadata/sample-catalog/overview/record_range?p_from=1&p_to=500&f=11&c=10
+         ::: return 10 records in the "Daft Sample Catalog" catalog with record ids between 1 and 500 (inclusive), starting at the eleventh record found
+         -->
+        <description>
+            Provide a RESTful webservice cability to make queries for asset metadata from Cumulus. Explicit and named queries are supported.
+            Explicit queries are passed as HTTP Request parameters, while named queries are defined as initialisation parameters to this servlet.
+            Named queries support parameters, so that when the URL references a named query, the parameers to the query can be passed as HTTP Request
+            parameters. Named queries do not have to be defined in Cumulus (a future version may support mapping to Cumulus named queries, but for
+            now named queries are defined in web.xml).
+
+            To date, the Metadata Servlet supports only Cumulus query syntax (SQL etc to be supported in future versions). It is highly recommended to use
+            named queries as queries can be quite complex, and so expilcit queries may make URLs very cumbersome and maybe even cause issues in transport.
+            Also explicit queries have hard coded values while named queries are more flexible in that they are parameterised.
+
+            A simple paging mechanism is supported, so that you can specify an index into a "result cursor", and a return length, to get back a
+            specific "page" of data. In version 2.1, this is not very efficient, as the full query is made each time, and so performance could be sow if the
+            query returns a large result set (i.e. many thousands from a catalog with hindreds of thousands of assets), and of course if assets that match the
+            query have been added or removed since the last call, then the returned assets may not be consistent with the previous call. However for typical
+            use cases, this paging mechanism is very useful as a way to implement paging in  web application.
+
+            Metadata is returned in JSON form, and so is programming language netural. IN particular Java, PHO, Javascript, Ruby and
+            (with a bit of help) .NET can work with the returned data.
+        </description>
+        <servlet-name>MetadataServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.MetadataServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+        <init-param>
+            <description>
+                Defines a named Cumulus query, that can be referenced in a URL. Queries are normal CUmulus queries, and must follow the rules
+                of Cumulus query syntay - e.g. make sure field names with spaces are quited, make sure thare are spaces around comparator operators
+                (e.g. " == " and not "==". Parameters are previfed with a "%" character, and the following name must be referenced in a URL as a URL
+                parameter (so if you have %p1 in the query definition, then your URL should look like "http://......?p1=colin?...."
+
+                Note that as web.xml has to be parsed as XML by Tomcat, you must explicitly URL encode the query, so if the quert has apersand, angle brackets etc,
+                then you must use the recoginsed URL encodings for them in these definitions.
+            </description>
+            <param-name>query:record_range</param-name>
+            <param-value>ID &gt;= %p_from and ID &lt;= %p_to</param-value>
+        </init-param>
+        <init-param>
+            <param-name>query:find_destination</param-name>
+            <param-value>"Byline Title" == "%p1"</param-value>
+        </init-param>
+        <init-param>
+            <param-name>query:find_photographer</param-name>
+            <param-value>"Copyright Notice" == "%p1"</param-value>
+        </init-param>
+        <init-param>
+            <param-name>query:find_country</param-name>
+            <param-value>"Country" == "%p1"</param-value>
+        </init-param>
+        <init-param>
+            <param-name>query:find_ship</param-name>
+            <param-value>"Byline" == "%p1"</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <description>
+            Provides the ability to upload assets, along with associate metadata to Cumulus.
+            Support is privided for multi-part upload (i.e. via a standard HTML form). Support for multiple
+            file upload from a single form is provided.
+
+            Expected support for direct upload of binary data via programming API expected in version 2.2).
+
+            Metadata in multi-part mode is mapped onto Cumulus fields by mapping HTML form "input" tag names to fields
+            in a "view" definition. This means that optimal performance is achieved, as OES can use Cumulus GUIDs, while the
+            form designer can work with simple field names. As the servlet can have multiple view definitions, the application can have as many
+            web forms as desired to upload files.
+
+            Note that in version 2.1, date and date-time data is only handled as "Long" data type. No formatting transofmration is provided.
+            It is expected that version 2.2 will provide a way to specify the text format of dates, that will result in mapping to native "Long"
+            data for dates and date-time supported by Cumulus.
+
+            In version 2.1 an asset handling set can be provided as a hidden form field. It is intended to depricate this in version 2.2
+            and to provide support for specifying the asset handling set as a URL parameter.
+        </description>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.UploadServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+        <init-param>
+            <description>
+                The maximumm file size to be allowed for upload in megabytes (so specify 20 for 20MB max). Default is 20MB
+            </description>
+            <param-name>max-file-size</param-name>
+            <param-value>20</param-value>
+        </init-param>
+        <init-param>
+            <description>
+                Cumulus asset handling set to use for asset upload if none specified in the requesting form.
+            </description>
+            <param-name>default-asset-handling-set</param-name>
+            <param-value>photocomp</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <description>
+            Provides asset management services such as download, check out etc.
+        </description>
+        <servlet-name>AssetServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.AssetServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <description>
+            Experimental service for testing various things
+        </description>
+        <servlet-name>BozoServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.BozoServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <description>
+            Servlet for cloaking and shrinking URLs
+        </description>
+        <servlet-name>UrlServlet</servlet-name>
+        <servlet-class>com.daftsolutions.daft.server.servlets.UrlServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <!-- Servlet Mapplings
+         Servlet mappings determine how servlets are invoked from URLs.
+         This is fairly obvious, so no further documentation provided.
+    -->
+    <servlet-mapping>
+        <servlet-name>AssetServlet</servlet-name>
+        <url-pattern>/asset/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PreviewServlet</servlet-name>
+        <url-pattern>/preview/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MetadataServlet</servlet-name>
+        <url-pattern>/metadata/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BozoServlet</servlet-name>
+        <url-pattern>/bozo/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UrlServlet</servlet-name>
+        <url-pattern>/url/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

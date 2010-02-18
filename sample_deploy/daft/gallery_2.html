@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Daft Sample Gallery 2</title>
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="./css/hr.css" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="./css/gallery.css" />
+        <link rel="stylesheet" type="text/css" media="screen"  href="css/slimbox.css"/>
+        <link rel="stylesheet" type="text/css" media="screen"  href="css/tree/mif-tree.css"/>
+        <link rel="stylesheet" type="text/css" media="screen"  href="css/tabs.css"/>
+        <!--[if lte IE 7]><link rel="stylesheet" href="./css/ie.css" type="text/css" /><![endif]-->
+        <script src="./js/datetimepicker_css.js" type="text/javascript"></script>
+        <script src="./js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+        <script src="./js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+        <script src="./js/rotater.js" type="text/javascript"></script>
+        <script src="./js/tabs.js" type="text/javascript"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Node.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Selection.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Hover.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Load.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Draw.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Transform.js"></script>
+        <script type="text/javascript" src="./js/tree/Mif.Tree.Sort.js"></script>
+        <script src="./js/slimbox.js" type="text/javascript"></script>
+        <script type="text/javascript" src="./js/gallery_2.js"></script>
+        <script type="text/javascript" >
+            window.addEvent("domready", initSearchStuff);
+        </script>
+    </head>
+    <body>
+        <!--header-->
+        <div id="header" class="group"> <a href="#"><img src="gfx/logo.gif" width="139" height="83" alt="DAFT Solutions" /></a>
+            <ul>
+                <li class="first"><a href="./demo.html">Upload</a></li>
+                <li><a href="./gallery_1.html">Gallery 1</a></li>
+                <li><a href="./gallery_2.html">Gallery 2</a></li>
+                <li><a href="http://cumulus.daft-solutions.com" target="_blank">Cumulus</a></li>
+                <li><a href="http://www.daft-solutions.com">Daft Solutions</a></li>
+            </ul>
+        </div>
+        <!--/header-->
+        <!--site wrap-->
+        <div id="wrap">
+            <!--content-->
+            <div id="content">
+                <div class="bl">
+                    <div class="br">
+                        <div class="tl">
+                            <div class="tr">
+                                <!--introduction-->
+                                <div id="introduction" class="group"> <img src="./gfx/gallery-intro.jpg" width="938" height="100" alt="Intro Image"/> </div>
+                                <!--/introduction-->
+                                <div class="form_pdo_search" style="width:930px;margin-bottom:10px;">
+                                    <span class="h3_pdo_search">Search</span>
+                                    <span><input id="q_quick_search" class="formlegend" type="text" name="quick_search" size="120"/></span>
+                                </div>
+                                <div style="float:left;width:200px">
+                                <ul id="tabs_category">
+                                    <li><a class="tab_category" href="#" id="category_one">Categories</a></li>
+                                    <li><a class="tab_category" href="#" id="category_two">Keywords</a></li>
+                                </ul>
+                                <div id='category_tabs'>
+                                    <div class='feature_category'>
+                                        <form action="" id="addCategory">
+                                            <table>
+                                                <tr>
+                                                    <td><input id="category_name" class="formlegend" type="text" name="category_name" size="20" /></td>
+                                                    <td colspan="2"><input type="button" class="button_small" value="Add" onclick="javascript:doAddCategory('$Categories', 'category_name')" /></td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                        <div id="categoryTree"></div>
+                                    </div>
+                                    <div class='feature_category'>
+                                        <form action="" id="addCategory">
+                                            <table>
+                                                <tr>
+                                                    <td><input id="keyword_name" class="formlegend" type="text" name="category_name" size="20" /></td>
+                                                    <td colspan="2"><input type="button" class="button_small" value="Add" onclick="javascript:doAddCategory('$Keywords', 'keyword_name')" /></td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                        <div id="keywordTree"></div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div style="float:left;width:10px;height:500px"></div>
+                                <div style="float:left;width:600px;height:500px">
+                                <ul id="tabs_search_results">
+                                    <li><a class="tab_search_results" href="#" id="search_results_one">Search Results</a></li>
+                                    <li><a class="tab_search_results" href="#" id="search_results_two">My Basket (0)</a></li>
+                                </ul>
+                                <div id="search_results_tabs">
+                                   <div class='feature_search_results' style="overflow:hidden">
+                                       <div id='gallery' style='width:510px;float:left'>
+                                          <ul id="page_navigator" style="height:25px;;margin-left:10px;">
+                                          </ul>
+                                          <ul id="gallery_images" class="thumbwrap">
+                                              <li id="gallery_image_1" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_2" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_3" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_4" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_5" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_6" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_7" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_8" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_9" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_10" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_11" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_12" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_13" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_14" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_15" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_16" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_17" style="visibility:hidden;"></li>
+                                              <li id="gallery_image_18" style="visibility:hidden;"></li>
+                                          </ul>
+                                      </div>
+                               </div>
+                               </div>
+                               <div class='feature_search_results'>
+                                        <div id='my_basket' style='width:510px;float:left'>
+                                          <div id="basket_menu" style="height:25px;margin-left:10px;">
+                                           <span><input type="button" class="button_small" value="Clear" onclick="javascript:doClearBasket()" /></span>
+                                           <span>
+                                           	<input type="button" id="basket_add_category_button" class="button_small" value="Add To Category/Keyword" style="display:none" onclick="javascript:doAddBasketToCategory()" />
+                                           </span>
+                                          </div>
+                                         <ul id="gallery_images" class="thumbwrap">
+                                              <li id="basket_image_1" style="visibility:hidden;"></li>
+                                              <li id="basket_image_2" style="visibility:hidden;"></li>
+                                              <li id="basket_image_3" style="visibility:hidden;"></li>
+                                              <li id="basket_image_4" style="visibility:hidden;"></li>
+                                              <li id="basket_image_5" style="visibility:hidden;"></li>
+                                              <li id="basket_image_6" style="visibility:hidden;"></li>
+                                              <li id="basket_image_7" style="visibility:hidden;"></li>
+                                              <li id="basket_image_8" style="visibility:hidden;"></li>
+                                              <li id="basket_image_9" style="visibility:hidden;"></li>
+                                              <li id="basket_image_10" style="visibility:hidden;"></li>
+                                              <li id="basket_image_11" style="visibility:hidden;"></li>
+                                              <li id="basket_image_12" style="visibility:hidden;"></li>
+                                              <li id="basket_image_13" style="visibility:hidden;"></li>
+                                              <li id="basket_image_14" style="visibility:hidden;"></li>
+                                              <li id="basket_image_15" style="visibility:hidden;"></li>
+                                              <li id="basket_image_16" style="visibility:hidden;"></li>
+                                              <li id="basket_image_17" style="visibility:hidden;"></li>
+                                              <li id="basket_image_18" style="visibility:hidden;"></li>
+                                          </ul>
+                                      </div>
+                              </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-->
+        <div id="footer" class="group">
+            <ul>
+                <li>Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</li>
+            </ul>
+        </div>
+        <!--/footer-->
+    </body>
+</html>

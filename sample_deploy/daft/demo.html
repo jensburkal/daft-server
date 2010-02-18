@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+        <title>Daft.Server Upload Example</title>
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="./css/hr.css" />
+        <link rel="stylesheet" type="text/css" media="screen"  href="css/uni-form.css"/>
+        <!--[if lte IE 7]><link rel="stylesheet" href="./css/ie.css" type="text/css" /><![endif]-->
+        <script type="text/javascript" src="./js/datetimepicker_css.js"></script>
+        <script src="./js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+        <script src="./js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+        <script type="text/javascript" src="./js/dwProgressBar.js"></script>
+        <style type="text/css">
+            #progress_box { background:url(./gfx/progress-bar-back.gif) right center no-repeat; width:200px; height:20px; float:left; }
+            #progress_perc { background:url(./gfx/progress-bar.gif) right center no-repeat; height:20px; }
+            #progress_text { font-family:tahoma, arial, sans-serif; font-size:11px; color:#000; float:left; padding:3px 0 0 10px; }
+        </style>
+        <script type="text/javascript">
+            window.addEvent('domready', function() {
+                pb = new dwProgressBar({
+                    container: $('progress_bar'),
+                    startPercentage: 100,
+                    speed:1000,
+                    boxID: 'progress_box',
+                    percentageID: 'progress_perc',
+                    displayID: 'progress_text',
+                    displayText: false
+                });
+
+                /* movers
+                        $$('.mover').each(function(el) {
+                                el.addEvent('click',function() {
+                                        pb2.set(el.get('rel'));
+                                });
+                        });
+                 */
+                //$('progress_bar').show();
+            });
+            
+        </script>
+    </head>
+    <body>
+        <!--header-->
+        <div id="header" class="group"> <a href="#"><img src="gfx/logo.gif" width="139" height="83" alt="DAFT Solutions" /></a>
+            <ul>
+                <li><a href="./gallery_1.html">Gallery 1</a></li>
+                <li><a href="./gallery_2.html">Gallery 2</a></li>
+                <li><a href="http://cumulus.daft-solutions.com" target="_blank">Cumulus</a></li>
+                <li><a href="http://www.daft-solutions.com">Daft Solutions</a></li>
+            </ul>
+        </div>
+        <!--/header-->
+        <!--site wrap-->
+        <div id="wrap">
+            <!--content-->
+            <div id="content">
+                <div class="bl">
+                    <div class="br">
+                        <div class="tl">
+                            <div class="tr">
+                                <!--introduction-->
+                                <div id="introduction" class="group"> <img src="./gfx/demo-intro.jpg" width="938" height="100" alt="Intro Image"/> </div>
+                                <!--/introduction-->
+                                <div class="margin-bottom">
+                                    <p class="instructions_content">This page shows how the Daft.Server can used to upload images to Cumulus, via a simple html form.</p>
+                                    <p class="instructions_content">As well as uploading the files, a number of previews will be created, which are used in the demonstration gallery pages.</p>
+                                </div>
+                                <div id="upload_form' "class="form">
+                                    <form action="http://macserver:8080/daft/upload/sample/upload_details?redirect=http://macserver:8080/daft/upload_done.html" name="asset_form" enctype="multipart/form-data" method="post" class="uniForm">
+                                        <fieldset>
+                                            <input class="formelement" type="hidden" name="asset-handling-set" value="daft-demo" />
+                                            <!--
+                                            <input class="formelement" type="hidden" name="preview:iphonesmall" value="type=ScaledBox,w=50,h=50"/>
+                                            <input class="formelement" type="hidden" name="preview:iphonemedium" value="type=MaxSize,size=200"/>
+                                            -->
+                                            <input class="formelement" type="hidden" name="preview:gallerysmall" value="type=ScaledBox,w=60,h=56"/>
+                                            <input class="formelement" type="hidden" name="preview:gallerytip" value="type=MaxSize,size=180"/>
+                                            <input class="formelement" type="hidden" name="preview:pdosmall" value="type=ScaledBox,size=100"/>
+                                            <input class="formelement" type="hidden" name="preview:pdobig" value="type=MaxSize,size=400"/>
+                                        </fieldset>
+                                        <fieldset class="col first">
+                                            <legend>Metadata (applies to all files)</legend>
+                                            <div class="ctrlHolder">
+                                                <label for="cumulus:Copyright_Notice"><em></em> Photographer:</label>
+                                                <input id="cumulus:Copyright_Notice" name="cumulus:Copyright_Notice" value="" size="35" maxlength="50" type="text" class="textInput" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="cumulus:User Comment"><em></em>Date Taken</label>
+                                                <input id="cumulus:User Comment" name="cumulus:User Comment" value="" size="35" maxlength="50" type="text" class="textInput" />
+                                                <a href="javascript:NewCssCal('cumulus:User Comment','ddmmyyyy')"><img src="./gfx/cal.gif" width="16" height="16" alt="Pick a date"/></a>
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="cumulus:Caption"><em></em>Caption</label>
+                                                <input id="cumulus:Caption" name="cumulus:Caption" value="" size="35" maxlength="50" type="text" class="textInput" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="cumulus:Description"><em></em>Description</label>
+                                                <input id="cumulus:Description" name="cumulus:Description" value="" size="35" maxlength="50" type="text" class="textInput" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="col last">
+                                            <legend>Files</legend>
+                                            <div class="ctrlHolder">
+                                                <label for="file_1"><em>*</em>File 1:</label>
+                                                <input id="file_1" name="file_1" type="file" size="50" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="file_2"><em>*</em>File 2:</label>
+                                                <input id="file_2" name="file_2" type="file" size="50" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="file_3"><em>*</em>File 3:</label>
+                                                <input id="file_3" name="file_3" type="file" size="50" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                            <div class="ctrlHolder">
+                                                <label for="file_4"><em>*</em>File 4:</label>
+                                                <input id="file_4" name="file_4" type="file" size="50" />
+                                                <p class="formHint"><span><em></em></span></p>
+                                            </div>
+                                        </fieldset>
+                                        <div class="buttonHolder">
+                                            <button id="submit_button" type="submit" class="primaryAction formelement button" value="Upload Photos" onclick="$('progress_bar').show();asset_form.submit();">
+                                                <span id="progress_bar" style="display:none;"></span><span id="button_text">Upload Photos</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-->
+        <div id="footer" class="group">
+            <ul>
+                <li>Daft Solutions  |  Schönhauserstr 14, 12169 Berlin, Germany | Email: <a href="mailto:info@daft-solutions.com">info@daft-solutions.com</a>|  Phone: +49 (0)30 64832935</li>
+            </ul>
+        </div>
+        <!--/footer-->
+    </body>
+</html>

@@ -1,0 +1,15 @@
+#category_tabs {background-color:#e7e7e7; position:relative; height:500px; width:200px; margin-bottom:10px; float:left; }
+.feature_category { height:500px; position:absolute; width:200px; overflow:auto; margin-top:6px}
+.feature_category img { border:none; }
+#tabs_category { margin-left:0;margin-bottom:2px}
+#tabs_category li {background-color:transparent;display:inline;float:none;list-style:none; }
+#tabs_category li a {background-color:#eedddd; color:#333333; display:inline; height:auto;padding:5px 16px;text-decoration:none;width:auto;font-size: 0.9em}
+#tabs_category li a.active { background-color:#e7e7e7;color:#000000; }
+
+#search_results_tabs {background-color:#e7e7e7; position:relative; height:500px; width:600px; margin-bottom:10px; float:left; }
+.feature_search_results { height:500px; position:absolute; width:600px; overflow:auto; margin-top:6px}
+.feature_search_results img { border:none; }
+#tabs_search_results { margin-left:0;margin-bottom:2px}
+#tabs_search_results li {background-color:transparent;display:inline;float:none;list-style:none; }
+#tabs_search_results li a {background-color:#eedddd; color:#333333; display:inline; height:auto;padding:5px 16px;text-decoration:none;width:auto;font-size: 0.9em}
+#tabs_search_results li a.active { background-color:#e7e7e7;color:#000000; }

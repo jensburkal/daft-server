@@ -1,0 +1,400 @@
+/* 
+Title:		Master styles for Daft Solutions
+Author:		Phillip Lovelace (http://www.pixelflips.com)
+Copyright:	Daft Solutions 2010
+*/
+
+@import url("reset.css");
+
+body {
+	background:#D4DCDF;
+	color: #2F2F2F;
+	font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 62.5%;
+}
+
+/*self-clear floats*/
+.group:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+/*links*/
+a {color:#00F;}
+a:hover {color:#666;}
+a:visited {color:#581C90;}
+
+p {
+	line-height:1.5em;
+	margin:0 0 .8em 0;
+}
+
+
+/* page structure 
+--------------------------------------------- */
+
+#wrap {
+	background:url(../images/content-bg.gif) top center repeat-y;
+	font-size:1.3em;
+	margin:0 auto;
+	padding:0 10px 0 10px;
+	width: 960px;
+}
+#content {
+	clear:both;
+	z-index:100;
+}
+#main-content {
+	float:left;
+	width:630px;
+}
+
+/*old school rounded corners*/
+.bl {
+	background: url(../images/bl.jpg) 0 100% no-repeat #FFF;
+	width: 100%;
+}
+.br {
+	background: url(../images/br.jpg) 100% 100% no-repeat;
+}
+.tl {
+	background: url(../images/tl.gif) 0 0 no-repeat;
+}
+.tr {
+	background: url(../images/tr.jpg) 100% 0 no-repeat;
+	overflow:hidden;
+	padding:10px;
+}
+
+
+/* header 
+--------------------------------------------- */
+#header {
+	background:#D4DCDF url(../images/header-bg.gif) repeat-y top center;
+	font-size: 1.3em;
+	margin:0 auto;
+	width: 960px;
+}
+#header img {
+	float:left;
+	margin:10px 0;
+}
+#header ul {
+	float:right;
+	padding:40px 0 0 0;
+}
+#header li {
+	background:url(../images/nav-divider.gif) no-repeat;
+	display:inline;
+	padding: 0 15px 0 18px;
+}
+#header li.first {
+	background:none;
+}
+#header li.last {
+	padding-right:0;
+}
+#header a {
+	color:#044275;
+	font-size:1.3em;
+	text-decoration:none;
+}
+#header a:hover {
+	color:#666;
+}
+
+
+/* introduction (homepage) 
+--------------------------------------------- */
+#introduction {
+	background:url(../images/intro-bg.gif) no-repeat top center;
+}
+.intro-content {
+	margin:0 0 10px 430px;
+	padding:10px 18px;
+	text-align:right;
+}
+.intro-content h1 {
+	color:#196AB2;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:2.1em;
+	font-style:italic;
+	font-weight:normal;
+	letter-spacing:.035em;
+	text-transform:uppercase;
+}
+.intro-content h1 em {
+	color:#EF7910;
+	display:block;
+	font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:.5em;
+	font-style:normal;
+	font-weight:bold;
+	letter-spacing:normal;
+	margin-top:-5px;
+	text-align:right;
+	text-transform:lowercase;
+}
+.intro-content p {
+	line-height:1.5em;
+	padding:0 0 0 25px;
+	text-align:left;
+	margin:0;
+}
+.intro-content span {
+	color:#77899a;
+	display:block;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:1em;
+	font-style:italic;
+	padding:0 0 15px 0;
+	text-align:center;
+	text-transform:uppercase;
+}
+.intro-buttons {
+	padding:0 0 0 25px;
+}
+.intro-buttons li {
+	float:left;
+}
+.intro-buttons img {
+	padding:0 5px;
+}
+.intro-buttons em {
+	color:#77899a;
+	display:block;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:.8em;
+	font-style:italic;
+	padding:15px 7px 0 7px;
+	text-transform:uppercase;
+}
+img.intro-divider {
+	padding:11px 0;
+}
+
+
+/* product overview (homepage)
+--------------------------------------------- */
+#product-overview {
+	margin:10px 0;
+}
+#product-overview h2 {
+	background:url(../images/heading-bg.gif) no-repeat 0 50%;
+	color:#4F4F4F;
+	font-family:"Times New Roman", Times, serif;
+	font-size:1.8em;
+	font-weight:normal;
+	padding:10px 0 10px 10px;
+}
+#product-overview h3 {
+	color:#fe7902;
+	font-size:1.5em;
+	font-weight:normal;
+	padding:0 0 7px 0;
+}
+.product-intro {
+	float:left;
+	margin:10px 10px 5px 0;
+	padding:0 0 0 35px;
+	width:45%;
+}
+.server-intro {
+	background:url(../images/server-icon.gif) no-repeat;
+}
+.server-intro ul {
+	list-style:square;
+	margin:0 0 .8em 2em;
+}
+.server-intro h4 {
+	padding:0 0 5px 0;
+	color:#FE7902;
+}
+.bridge-intro {
+	background:url(../images/bulb-icon.gif) no-repeat;
+}
+.product-list-intro {
+	border-top:1px solid #CCC;
+	clear:both;
+	padding:10px 5px 0 5px;
+}
+.product-list-intro ul {
+	float:left;
+}
+.product-list-intro li {
+	color:#9F9F9F;
+	display:inline;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	padding-right:10px;
+}
+.product-list-intro li.product {
+	background:url(../images/prod-arrow.gif) no-repeat 0 50%;
+	color:#EF7910;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:bold;
+	padding:0 5px 0 18px;
+}
+.product-list-intro p {
+	float:right;
+}
+
+
+/* company overview (homepage)
+--------------------------------------------- */
+#company-overview {
+	margin:0 0 10px 0;
+}
+#company-overview h2 {
+	background:url(../images/heading-bg.gif) no-repeat 0 50%;
+	color:#4F4F4F;
+	font-family:"Times New Roman", Times, serif;
+	font-size:1.8em;
+	font-weight:normal;
+	padding:10px 0 10px 10px;
+}
+.company-info {
+	float:left;
+	padding:10px 0 0 0;
+	width:630px;
+}
+.company-info img {
+	float:left;
+	margin:5px 10px 0 0;
+}
+.company-info h3 {
+	color:#FE7902;
+	padding:0 0 7px;
+	font-size:1.5em;
+	font-weight:normal;
+}
+.container {
+	background: url(../images/container-bottom.gif) no-repeat bottom left;
+	width:283px;
+}
+.container-inner {
+	margin:10px;
+}
+.container h3 {
+	background:#FFF url(../images/container-top.gif) no-repeat top left;
+	border-bottom:1px solid #CCC;
+	color:#4F4F4F;
+	font-family:"Times New Roman", Times, serif;
+	font-size:1.7em;
+	font-weight:normal;
+	margin:0;
+	padding:7px 0 5px 10px;
+}
+#news h4 {
+	color:#EF7910;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:1.1em;
+}
+#news span {
+	color:#8e8a8a;
+	display:block;
+	font-size:1em;
+	padding:0 0 5px 0;
+}
+#news {
+	float:right;
+	margin: 10px 5px 0 0;
+	font-size:.8em;
+	color:#4F4F4F;
+}
+
+
+/* partner overview (homepage)
+--------------------------------------------- */
+#partner-overview h2 {
+	background:url(../images/heading-bg.gif) no-repeat 0 50%;
+	color:#4F4F4F;
+	font-family:"Times New Roman", Times, serif;
+	font-size:1.8em;
+	font-weight:normal;
+	padding:10px 0 10px 10px;
+}
+#partner-overview h3 {
+	color:#FE7902;
+	font-size:1.5em;
+	font-weight:normal;
+	padding:0 0 7px;
+}
+#partner-overview h4 {
+	color:#9F9F9F;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-weight:normal;
+}
+.partner-intro {
+	padding-top:10px;
+}
+.partner-logos {
+	border-top:1px solid #CCC;
+	margin:5px 0 0 0;
+	padding:10px 0 0 0;
+}
+.partner-logos ul {
+	float:left;
+}
+.partner-logos li {
+	display:inline;
+	padding:2px;
+}
+ul.solution-partners {
+	border-left:1px solid #CCC;
+	float:right;
+	padding: 0 0 0 8px;
+}
+.partner-logos img {
+	-moz-opacity:.50;
+	filter:alpha(opacity=50);
+	opacity:.50;
+}
+.partner-logos img:hover {
+	-moz-opacity:1;
+	filter:alpha(opacity=100);
+	opacity:1;
+}
+
+
+/* footer
+--------------------------------------------- */
+#footer {
+	background:#D4DCDF url(../images/footer-bg.gif) no-repeat top left;
+	font-size: 1.3em;
+	margin:0 auto;
+	padding:15px 0;
+	width: 960px;
+}
+#footer ul {
+	float:left;
+}
+#footer a {
+	color:#044275;
+}
+#footer a:hover {
+	color:#666;
+}
+
+/*bottom-nav*/
+ul#bottom-nav {
+	float:right;
+}
+ul#bottom-nav li {
+	display:inline;
+	padding: 0 0 0 15px;
+}
+ul#bottom-nav .site-by {
+	display:block;
+	text-align:right;
+}
+ul#bottom-nav .site-by a {
+	color:#81919F;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:.8em;
+	text-decoration:none;
+}
+ul#bottom-nav .site-by a:hover {
+	color:#FE7902;
+}

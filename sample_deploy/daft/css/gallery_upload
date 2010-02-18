@@ -1,0 +1,93 @@
+#gallery_item.ajax-loading {
+	padding: 20px 0;
+	background: url(./gfx/spinner.gif) no-repeat center;
+}
+
+#page_navigator {
+	border: 0px solid #cccccc;
+	margin: 0;
+}
+
+#page_navigator li {
+   display: inline;
+   list-style-type: none;
+ 	padding: .3em 6px;
+	font-size: 1.1em;
+	color: #fe7902;
+}
+
+#page_navigator li a {
+	font-size: 1.0em;
+	color: #fe7902;
+}
+.thumbwrap {
+   width:530px;
+	margin-bottom: 8px;
+	background:#ffffff;
+	border:0px solid #cccccc;
+	padding: 8px 4px 0 4px;
+	margin: 0;
+}
+.thumbwrap li {
+	display: -moz-inline-box;
+	display: inline-block;
+	/*\*/ vertical-align: top; /**/
+	margin: 0;
+	border: 0px solid #999999;
+	padding: 0;
+}
+
+.thumbwrap li>div {
+	/*\*/ display: table; /**/
+	width: 100px;
+}
+.thumbwrap a {
+	display: block;
+	text-decoration: none;
+	color: #000000;
+	background-color: #ffffff;
+	cursor: pointer;
+	text-align:center;
+}
+/*\*/
+.thumbwrap>li .wrimg {
+	display: table-cell;
+	vertical-align: middle;
+	width: 100px;
+	height: 100px;
+}
+/**/
+.thumbwrap li .wrimg {
+	text-align: center;
+}
+.thumbwrap img {
+	border: solid 0px #6666ff;
+	vertical-align: middle;
+}
+.thumbwrap a:hover {
+	background-color: #ffffff;
+}
+
+/*\*//*/
+* html .thumbwrap li .wrimg {
+	display: block;
+	font-size: 1px;
+	text-align: center;
+}
+* html .thumbwrap .wrimg span {
+	display: inline-block;
+	vertical-align: middle;
+	height: 100px;
+	width: 1px;
+}
+/**/
+.thumbwrap .caption {
+	display: block;
+	padding: .2em 5px;
+	font-size: .7em;
+	line-height: 1.1;
+	border-top: 0px solid #cccccc;
+	w\idth: 100px;  /* Moz, IE6 */
+	text-align: center;
+	margin-bottom: 8px;
+}

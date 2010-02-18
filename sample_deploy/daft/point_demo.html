@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+<title>Point Outsourcing Print Portal</title>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="./css/point/point.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="./css/menu/menu_default.css" />
+<link rel="stylesheet" type="text/css" media="screen"  href="css/slimbox.css"/>
+<link rel="stylesheet" type="text/css" media="screen"  href="css/tree/mif-tree.css"/>
+<link rel="stylesheet" type="text/css" media="screen"  href="css/point/tabs.css"/>
+<link rel="stylesheet" type="text/css" media="screen"  href="css/uni-form.css"/>
+<!--[if lte IE 7]><link rel="stylesheet" href="./css/ie.css" type="text/css" /><![endif]-->
+    <!--[if lte ie 6]>
+      <style type="text/css" media="screen">
+        /*
+        Move these to your IE specific stylesheet if possible
+        */
+        .uniForm,
+        .uniForm fieldset,
+        .uniForm .ctrlHolder,
+        .uniForm .formHint,
+        .uniForm .buttonHolder, 
+        .uniForm .ctrlHolder .multiField,
+        .uniForm .inlineLabel{ zoom:1; }
+
+        .uniForm .inlineLabels label, .uniForm .inlineLabels .label,
+        .uniForm .blockLabels label, .uniForm .blockLabels .label,
+        .uniForm .inlineLabel span{ padding-bottom: .2em; }
+
+        .uniForm .inlineLabel input,
+        .uniForm .inlineLabels .inlineLabel input,
+        .uniForm .blockLabels .inlineLabel input{ margin-top: -.3em; }
+      </style>
+    <![endif]-->
+
+    
+    <!--[if gt ie 6]>
+      <style type="text/css" media="screen">
+        /*
+        Move these to your IE specific stylesheet if possible
+        */
+        .uniForm,
+        .uniForm fieldset,
+        .uniForm .ctrlHolder,
+        .uniForm .formHint,
+        .uniForm .buttonHolder, 
+        .uniForm .ctrlHolder .multiField,
+        .uniForm .inlineLabel{ zoom:1; }
+
+        .uniForm .inlineLabels label, .uniForm .inlineLabels .label,
+        .uniForm .blockLabels label, .uniForm .blockLabels .label,
+        .uniForm .inlineLabel span{ padding-bottom: .2em; }
+
+        .uniForm .inlineLabel input,
+        .uniForm .inlineLabels .inlineLabel input,
+        .uniForm .blockLabels .inlineLabel input{ margin-top: -.3em; }
+      </style>
+    <![endif]-->
+
+
+<script src="./js/datetimepicker_css.js" type="text/javascript"></script>
+<script src="./js/mootools-1.2.4-core-yc.js" type="text/javascript"></script>
+<script src="./js/mootools-1.2.4.2-more.js" type="text/javascript"></script>
+<script src="./js/rotater.js" type="text/javascript"></script>
+<script src="./js/tabs.js" type="text/javascript"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Node.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Selection.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Hover.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Load.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Draw.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Transform.js"></script>
+<script type="text/javascript" src="./js/tree/Mif.Tree.Sort.js"></script>
+<script type="text/javascript" src="./js/menu/ART.js"></script>
+<script type="text/javascript" src="./js/menu/moocanvas.js"></script>
+<script type="text/javascript" src="./js/menu/Mif.Menu.js"></script>
+<script type="text/javascript" src="./js/menu/Mif.Menu.Container.js"></script>
+<script type="text/javascript" src="./js/menu/Mif.Menu.List.js"></script>
+<script type="text/javascript" src="./js/menu/Mif.Menu.Item.js"></script>
+<script type="text/javascript" src="./js/menu/Mif.Menu.Utils.js"></script>
+<script src="./js/slimbox.js" type="text/javascript"></script>
+<script type="text/javascript" src="./js/point/point.js"></script>
+<script type="text/javascript" >
+	window.addEvent("domready", initPointStuff);
+</script>
+</head>
+<body>
+<!--header-->
+<div id="header" class="group">
+</div>
+<!--/header-->
+<!--site wrap-->
+<div id="wrap">
+  <!--content-->
+  <div id="content">
+    <div class="bl">
+      <div class="br">
+        <div class="tl">
+          <div class="tr">
+            <!--introduction-->
+            <div id="introduction" class="group">
+					<table width="100%">
+						<tr>
+							<div style="float:left">
+								<input id="file_menu_button" type="button" class="menu_button" value="File"/>
+							</div>
+							<div style="float:left;display:block">
+								<input id="project_menu_button" type="button" class="menu_button" value="Project"/>
+							</div>
+							<div style="float:right">
+								<div id="welcome_message" style="display:none"></div>
+							</div>
+						</tr>
+					</table>
+				</div>
+            <!--/introduction-->
+            <table width="938px" height="600px" cellspacing="0" cellpadding="0">
+              <tr>
+						<td>
+							<div id="project_start_panel" style="display:block">
+									<ul id="tabs_psf">
+										<li><a class="tab_psf" href="#" id="one">General</a></li>
+										<li><a class="tab_psf" href="#" id="two">Specifications</a></li>
+									</ul>
+									<div id='project_start_tabs'>
+										<div class='feature_psf'>
+											<div id="generalTab">
+												<form id="project_start_form" name="login_form" method="post" action="#" class="uniForm">
+													<fieldset class="col first">
+														<legend>Project Info</legend>
+														<div class="ctrlHolder">
+															<label for="noosh:name"><em>*</em> Project Name:</label>
+															<input id="noosh:name" name="noosh:name" value="" size="35" maxlength="50" type="text" class="textInput" />
+															<p class="formHint"><span><em></em></span></p>
+														</div>
+														<div class="ctrlHolder">
+															<label for="noosh:requester_name"><em>*</em> Requester Name:</label>
+															<input id="noosh:requester_name" name="noosh:requester_name" value="" size="35" maxlength="50" type="text" class="textInput" />
+															<p class="formHint"><span><em></em></span></p>
+														</div>
+														<div class="ctrlHolder">
+															<label for="noosh:phone_number"><em>*</em> Phone Number:</label>
+															<input id="noosh:phone_number" name="noosh:phone_number" value="" size="35" maxlength="50" type="text" class="textInput" />
+															<p class="formHint"><span><em></em> </span></p>
+														</div>
+														<div class="ctrlHolder">
+															<label for="noosh:completion_date"><em>*</em> Completion Date:</label>
+															<input id = "noosh:completion_date" name="noosh:completion_date" id="email" value="" size="12" maxlength="12" type="text" class="textInput" />
+															<a href="javascript:NewCssCal('noosh:completion_date','ddmmyyyy')"><img src="./gfx/cal.gif" border="0" width="16" height="16" alt="Pick a date"/></a>
+															<p class="formHint"><span><em>&nbsp;</em> </span></p>
+														</div>
+													</fieldset>
+													<fieldset class="col last">
+														<legend>More Project Info</legend>
+														<div class="ctrlHolder">
+															<label for="noosh:number"><em>*</em> Project Number:</label>
+															<input name="noosh:number" id="email" value="" size="35" maxlength="50" type="text" class="textInput" />
+															<p class="formHint"><span><em></em> </span></p>
+														</div>
+														<div class="ctrlHolder">
+															<p class="label">
+															  <em>*</em> Options
+															</p>
+															<div class="multiField">
+															  <label for="noosh:reprint" class="inlineLabel"><input id="noosh:reprint" name="noosh:reprint" value="1" type="checkbox" /> <span>Reprint ?</span></label>
+															  <label for="noosh:multiple_versions" class="inlineLabel"><input id="noosh:multiple_versions" name="noosh:multiple_versions" value="1" type="checkbox" /> <span>Multiple Versions ?</span></label>
+															  <label for="noosh:artwork_complete" class="inlineLabel"><input id="noosh:artwork_complete" name="noosh:artwork_complete" value="1" type="checkbox" /> <span>Artwork Complete ?</span></label>
+															</div>
+															<p class="formHint"><span><em></em> </span></p>
+														</div>
+													</fieldset>
+												</form>
+											</div>
+										</div>
+										<div class="feature_psf">
+											<div id="specificationsTab">
+												<form id="spec_form" name="spec_form" method="post" action="#"  class="uniForm">
+													<fieldset class="col first">
+														<legend>Spec Info</legend>
+														<div class="ctrlHolder">
+															<label for="email"><em>*</em> One line input field</label>
+															<input name="email" id="email" value="" size="35" maxlength="50" type="text" class="textInput" />
+															<p class="formHint"><span><em>*</em> This is a .formHint</span></p>
+														</div>
+												</fieldset>
+													<fieldset class="col last">
+														<legend>Stock/Inks</legend>
+													</fieldset>
+												</form>
+											</div>
+										</div>
+									</div>
+							</div>
+						</td>
+               </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--footer-->
+<div id="footer" class="group">
+  <ul>
+    <li>Point Outsourcing  |  Johannesburg, South Africa | Email: <a href="mailto:info@pointsa.za.com">info@pointsa.za.com</a> |  Phone: +27 xxxxxxxxxxx</li>
+  </ul>
+</div>
+<!--/footer-->
+<div id="login_dialog" style="display:none">
+	<center>
+		<table width="100%" cellspacing="4">
+			<tr>
+				<td align="center">
+					<h3>Portal Login</h3>
+				</td>
+				<td align="right">
+					<img id="login_close" src="./gfx/window_close.gif" border="0" width="16" height="16" onclick="javascript:cancelLogin();"/>
+				</td>
+			</tr>
+		</table>
+				<form id="login_form" name="login_form" method="post" action="#">
+					<table align="center" width="300" border="0" cellpadding="4">
+						<tr>
+							<td  align="right" class="formlegend">Username:</td>
+							<td><input id="login_username" class="formelement" id="name" type="text" name="username"></td>
+						</tr>
+						<tr>
+							<td align="right" class="formlegend">Password:</td>
+							<td><input id="login_password" class="formelement" type="password" name="password"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input id="login_submit" type="submit" name="login_submit" value="Go" class="formelement button_medium">
+								<div id="login_working" style="display:none"><img align="absmiddle" src="./gfx/spinner.gif">&nbsp;Authenticating ...</div>
+								<div id="login_failed" class="error_text" style="display:none">Login failed</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+	</center>
+</div>
+
+</body>
+</html>

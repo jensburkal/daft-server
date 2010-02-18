@@ -1,0 +1,7 @@
+#project_start_tabs {background-color:#e7e7e7; height:490px; width:710px; margin-bottom:6px; }
+.feature_psf { height:490px; position:absolute; width:660px; overflow:auto; margin-top:6px; margin-left:10px}
+.feature_psf img { border:none; }
+#tabs_psf { margin-left:0;margin-bottom:2px}
+#tabs_psf li {background-color:transparent;display:inline;float:none;list-style:none; }
+#tabs_psf li a {background-color:#eedddd; color:#333333; display:inline; height:auto;padding:5px 16px;text-decoration:none;width:auto;font-size: 0.9em}
+#tabs_psf li a.active { background-color:#e7e7e7;color:#000000; }
