@@ -231,6 +231,7 @@ public class UploadServlet extends HttpServlet {
                             asset.name = fileName;
                             asset.data = Utilities.getBytesFromInputStream(filePart.getInputStream());
                             assets.add(asset);
+                            logger.debug(" --- asset size is: " + asset.data.length);
                         } else if (part.isParam()) {
                             ParamPart paramPart = (ParamPart) part;
                             String paramName = paramPart.getName();
@@ -369,8 +370,10 @@ public class UploadServlet extends HttpServlet {
                                 // assume field id is FIELD_RECORD_ID for now
                                 //TODO make this general, to use other fields for the id - as in PreviewServlet
                                 File cacheFile = previewCacheManager.makeCacheFile(catalogName, FIELD_RECORD_ID, String.valueOf(record.id), preview.getName(), preview.isForce());
-                                logger.debug("processing preview: " + preview.getName() + " for record id: " + record.id + " to cache file: " + cacheFile.getAbsolutePath());
-                                damBean.storeAssetPreview(connection, record.id, preview, cacheFile);
+                                if (record.id != -1) {
+                                    logger.debug("processing preview: " + preview.getName() + " for record id: " + record.id + " to cache file: " + cacheFile.getAbsolutePath());
+                                    damBean.storeAssetPreview(connection, record.id, preview, cacheFile);
+                                }
                             }
                         }
 
@@ -379,8 +382,10 @@ public class UploadServlet extends HttpServlet {
                             List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
                             HashMap<String, Integer> recordIds = new HashMap<String, Integer>();
                             for (DamRecord record : records) {
-                                logger.info("new asset in Cumulus with id: " + record.id);
-                                recordIds.put("Id", record.id);
+                                if (record.id != -1) {
+                                    logger.info("new asset in Cumulus with id: " + record.id);
+                                    recordIds.put("Id", record.id);
+                                }
                             }
                             jsonObjects.add(new JSONObject(recordIds));
                             // no redirect so return return record ids
