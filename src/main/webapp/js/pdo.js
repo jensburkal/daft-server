@@ -1,7 +1,7 @@
-var quickSearchBaseUrl = 'http://colin-mobiledev:8083/daft/metadata/sample/pdo_view/quicksearch';
-var categorySearchBaseUrl = 'http://colin-mobiledev:8083/daft/metadata/sample/category/get';
-var categoryCreateBaseUrl = 'http://colin-mobiledev:8083/daft/metadata/sample/category/create';
-var metadataUrl = 'http://colin-mobiledev:8083/daft/metadata/sample/pdo_view';
+var quickSearchBaseUrl = 'http://macserver:8080/daft/metadata/sample/pdo_view/quicksearch';
+var categorySearchBaseUrl = 'http://macserver:8080/daft/metadata/sample/category/get';
+var categoryCreateBaseUrl = 'http://macserver:8080/daft/metadata/sample/category/create';
+var metadataUrl = 'http://macserver:8080/daft/metadata/sample/pdo_view';
 
 var galleryPhotos = null;
 var request = null;
@@ -167,7 +167,7 @@ function showPager() {
    l.addEvent('click', selectPage);
 	for (var i=0;i<galleryPages;i++) {
 	   var pl = new Element('li', {
-		   'id': 'page_'+(i+1),
+		   'id': 'page_'+(i+1)
 			});
 		new Element ('a', {
 			'href': '#',
@@ -214,7 +214,7 @@ function getThumbBody(photo, thumbId) {
 	 'id': thumbId
 	 });
 	 var span1 = new Element('span', {
-	    'class': 'wrimg',
+	    'class': 'wrimg'
 	 }).inject(infoElement);
 	 var span11 = new Element('span').inject(span1);
 	 
@@ -227,7 +227,7 @@ function getThumbBody(photo, thumbId) {
    }).inject(span1);
      
     var span2 = new Element('span', {
-        'class': 'caption',
+        'class': 'caption'
     }).inject(infoElement);
 	 span2.set('html', photo.Record_Name);
   
