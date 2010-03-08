@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 public class DamHelperServlet extends HttpServlet {
 
-    public final static String VERSION_NUMBER = "3.6.1";
+    public final static String VERSION_NUMBER = "3.7";
     private static Logger logger = Logger.getLogger(DamHelperServlet.class);
     // constants
     public final static String SOURCE_CUMULUS = "cumulus";
@@ -38,6 +38,8 @@ public class DamHelperServlet extends HttpServlet {
     public final static String DEPLOY_MODE_TEST = "test";
     public final static String DEPLOY_MODE_PRODUCTION = "production";
     public final static String DEFAULT_DEPLOY_MODE = DEPLOY_MODE_PRODUCTION;
+    public final static String DEFAULT_GUEST_USER = "guest";
+    public final static String DEFAULT_ASSET_HANDLING_SET = "Standard";
 
     /*
      * Context parameters for access form other servlets
@@ -53,7 +55,9 @@ public class DamHelperServlet extends HttpServlet {
     public final static String BASE_URL = "Base-Url";
     public final static String CACHE_DIR = "Cache-Dir";
     public final static String CLOAKED_URLS = "Cloaked-Urls";
+    public final static String ASSET_HANDLING_SET = "Asset-Handling-Set";
     public final static String PARAM_BASE_URL = "baseurl";
+    public final static String PARAM_GUEST_USER = "guest-user";
     public final static String PARAM_PREVIEW_MAPPING = "servlet-mapping-preview";
     public final static String PARAM_METADATA_MAPPING = "servlet-mapping-metadata";
     public final static String PARAM_DEPLOY_MODE = "deploy-mode";
@@ -96,6 +100,7 @@ public class DamHelperServlet extends HttpServlet {
     private String previewMapping = null;
     private String metadataMapping = null;
     private File cacheDir = null;
+    private String guestUser = DEFAULT_GUEST_USER;
     //TODO sort this out
     public final static String TRUE = "true";
     public final static String FALSE = "false";
@@ -104,6 +109,7 @@ public class DamHelperServlet extends HttpServlet {
     private int defaultLicenses = DEFAULT_LICENSES;
     private int defaultClones = DEFAULT_CLONES;
     private String deployMode = DEFAULT_DEPLOY_MODE;
+    private String assetHandlingSet = DEFAULT_ASSET_HANDLING_SET;
     private boolean licensed = false;
 
     // just for Philip training
@@ -134,7 +140,9 @@ public class DamHelperServlet extends HttpServlet {
 
             // initialise properties for web services
             Properties properties = new Properties();
-            properties.setProperty(CumulusBean.CUMULUS_ASSET_HANDLING_SET, context.getInitParameter(CumulusBean.CUMULUS_ASSET_HANDLING_SET));
+            String p = context.getInitParameter(CumulusBean.CUMULUS_ASSET_HANDLING_SET);
+            if (p != null) assetHandlingSet = p;
+            properties.setProperty(CumulusBean.CUMULUS_ASSET_HANDLING_SET, assetHandlingSet);
             properties.setProperty(CumulusBean.TEMP_DIR, context.getInitParameter(CumulusBean.TEMP_DIR));
             properties.setProperty(CumulusBean.CACHE_DIR, context.getInitParameter(CumulusBean.CACHE_DIR));
 
@@ -153,7 +161,8 @@ public class DamHelperServlet extends HttpServlet {
                     }
                 } else if (PARAM_BASE_URL.equals(param)) {
                     baseUrl = context.getInitParameter(PARAM_BASE_URL);
-
+                } else if (PARAM_GUEST_USER.equals(param)) {
+                    guestUser = context.getInitParameter(PARAM_GUEST_USER);
                 } else if (PARAM_DEPLOY_MODE.equals(param)) {
                     deployMode = context.getInitParameter(PARAM_DEPLOY_MODE);
                 } else if (PARAM_PREVIEW_MAPPING.equals(param)) {
@@ -324,6 +333,7 @@ public class DamHelperServlet extends HttpServlet {
                 }
                 categoryFieldDescriptors.put(conn.getKey(), catalogCategoryFieldDescriptors);
             }
+            context.setAttribute(ASSET_HANDLING_SET, assetHandlingSet);
             context.setAttribute(CLOAKED_URLS, cloakedUrls);
             context.setAttribute(BASE_URL, baseUrl);
             context.setAttribute(PARAM_DEPLOY_MODE, deployMode);

@@ -4,6 +4,7 @@
  */
 package com.daftsolutions.daft.server.servlets;
 
+import com.daftsolutions.lib.previewcache.AdvancedPreviewCacheManager;
 import com.daftsolutions.lib.previewcache.PreviewCacheManager;
 import com.daftsolutions.lib.utils.SimpleEntry;
 import com.daftsolutions.lib.ws.beans.DamBean;
@@ -26,11 +27,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class RESTfulServlet extends HttpServlet {
 
+    public final static String UTF_8 = "UTF-8";
     public final static String FIELD_RECORD_ID = "ID";
     public final static String FIELD_RECORD_NAME = "Record Name";
     public final static String FIELD_CATEGORY_ID = "ID";
     public final static String FIELD_CATEGORY_NAME = "Category Name";
     public final static String FIELD_CATEGORY_SUBCATEGORIES = "SubCategories";
+    public final static String DEFAULT_ASSET_HANDLING_SET = "Standard";
     protected String baseUrl = null;
     protected int baseUrlLength = 0;
     protected String previewMapping = null;
@@ -41,6 +44,7 @@ public abstract class RESTfulServlet extends HttpServlet {
     protected HashMap<String, Map<String, SimpleEntry[]>> urlFields = new HashMap<String, Map<String, SimpleEntry[]>>();
     protected PreviewCacheManager previewCacheManager = null;
     protected String deployMode = DamHelperServlet.DEFAULT_DEPLOY_MODE;
+    protected String assetHandlingSet = DamHelperServlet.DEFAULT_ASSET_HANDLING_SET;
 
     @Override
     public void init() {
@@ -52,8 +56,10 @@ public abstract class RESTfulServlet extends HttpServlet {
         recordFieldDescriptors = (HashMap<String, Map<String, DamFieldDescriptor[]>>) getServletContext().getAttribute(com.daftsolutions.daft.server.servlets.DamHelperServlet.DAM_RECORD_FIELD_DESCRIPTORS);
         categoryFieldDescriptors = (HashMap<String, Map<String, DamFieldDescriptor[]>>) getServletContext().getAttribute(com.daftsolutions.daft.server.servlets.DamHelperServlet.DAM_CATEGORY_FIELD_DESCRIPTORS);
         urlFields = (HashMap<String, Map<String, SimpleEntry[]>>) getServletContext().getAttribute(DamHelperServlet.DAM_URL_FIELDS);
-        previewCacheManager = new PreviewCacheManager((File) getServletContext().getAttribute(DamHelperServlet.CACHE_DIR));
+        //previewCacheManager = new PreviewCacheManager((File) getServletContext().getAttribute(DamHelperServlet.CACHE_DIR));
+        previewCacheManager = new AdvancedPreviewCacheManager((File) getServletContext().getAttribute(DamHelperServlet.CACHE_DIR));
         deployMode = (String) getServletContext().getAttribute(DamHelperServlet.PARAM_DEPLOY_MODE);
+        assetHandlingSet = (String) getServletContext().getAttribute(DamHelperServlet.ASSET_HANDLING_SET);
     }
 
     /**

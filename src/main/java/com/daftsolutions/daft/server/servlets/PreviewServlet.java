@@ -4,8 +4,10 @@
  */
 package com.daftsolutions.daft.server.servlets;
 
+import com.daftsolutions.lib.ws.dam.DamAsset;
 import com.daftsolutions.lib.ws.dam.DamConnectionInfo;
 import com.daftsolutions.lib.ws.dam.DamFieldDescriptor;
+import com.daftsolutions.lib.ws.dam.DamRecord;
 import java.io.File;
 import org.apache.log4j.Logger;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 public class PreviewServlet extends RESTfulServlet {
 
     private static Logger logger = Logger.getLogger(PreviewServlet.class);
+    public final static String URL_PARAM_ROTATE = "rotate";
     public final static String URL_PARAM_MAX_SIZE = "maxSize";
     public final static String URL_PARAM_SIZE = "size";
     public final static String URL_PARAM_TOP = "t";
@@ -39,6 +42,9 @@ public class PreviewServlet extends RESTfulServlet {
     public final static String URL_PARAM_FORMAT = "format";
     public final static String URL_PARAM_COMNPRESSION_LEVEL = "compressionLevel";
     public final static String URL_PARAM_FORCE = "force";
+    public final static String URL_PARAM_CATALOG = "catalog";
+    public final static String URL_PARAM_PARENT = "parent";
+    public final static String URL_PARAM_ASSET_HANDLING_SET = "assetHandlingSet";
     public final static String PARAM_PREFIX_FIELD = "field";
     public final static String PARAM_PREVIEWS_FIELD = "previews";
     public final static String DEFAULT_PREVIEWS_FIELD = "Previews";
@@ -52,6 +58,7 @@ public class PreviewServlet extends RESTfulServlet {
     protected DamFieldDescriptor recordIdFieldDescriptor = null;
     protected Map<String, Map<String, DamFieldDescriptor>> fieldDescriptors = new HashMap<String, Map<String, DamFieldDescriptor>>();
     protected String previewFieldName = DEFAULT_PREVIEWS_FIELD;
+    protected int rotateQuadrant = -1;
     protected int previewSize = 0;
     protected int previewTop = -1;
     protected int previewLeft = -1;
@@ -157,6 +164,10 @@ public class PreviewServlet extends RESTfulServlet {
             String fieldId = null;
             String id = null;
             boolean maxSize = false;
+            boolean rotate = false;
+            boolean crop = false;
+            boolean catalogPreview = false;
+            int previewParentId = -1;
             if (pathElements == null) {
                 logger.debug("Invalid URL - no path elements");
             } else if (pathElements.length < 3) {
@@ -210,6 +221,7 @@ public class PreviewServlet extends RESTfulServlet {
             }
             //logger.debug("PROFILING preview request url parsed");
 
+            rotateQuadrant = -1;
             previewTop = -1;
             previewLeft = -1;
             previewWidth = 0;
@@ -227,24 +239,46 @@ public class PreviewServlet extends RESTfulServlet {
                         logger.info("invalid preview max size: " + request.getParameter(paramName));
                         ok = false;
                     }
+                } else if (URL_PARAM_ROTATE.equals(paramName)) {
+                    try {
+                        rotateQuadrant = new Integer(request.getParameter(paramName));
+                        if (rotateQuadrant < 1 || rotateQuadrant > 3) {
+                            throw new NumberFormatException("rotation quadrand must be 1, 2 or 3");
+                        }
+                        rotate = true;
+                    } catch (NumberFormatException nfe) {
+                        logger.info("invalid preview rotation degrees: " + request.getParameter(paramName));
+                        ok = false;
+                    }
                 } else if (URL_PARAM_SIZE.equals(paramName)) {
                     try {
                         previewSize = new Integer(request.getParameter(paramName));
                         previewWidth = previewSize;
                         previewHeight = previewSize;
+                        crop = true;
                     } catch (NumberFormatException nfe) {
                         logger.info("invalid preview size: " + request.getParameter(paramName));
                         ok = false;
                     }
+                } else if (URL_PARAM_ASSET_HANDLING_SET.equals(paramName)) {
+                    assetHandlingSet = request.getParameter(URL_PARAM_ASSET_HANDLING_SET);
                 } else if (URL_PARAM_FORMAT.equals(paramName)) {
                     previewFormat = request.getParameter(paramName);
                 } else if (URL_PARAM_FORCE.equals(paramName)) {
                     forcePreview = true;
+                } else if (URL_PARAM_CATALOG.equals(paramName)) {
+                    catalogPreview = true;
+                } else if (URL_PARAM_PARENT.equals(paramName)) {
+                    try {
+                        previewParentId = new Integer(request.getParameter(paramName));
+                    } catch (NumberFormatException nfe) {
+                        logger.info("invalid preview parent id: " + request.getParameter(paramName) + " ignoring");
+                    }
                 } else if (URL_PARAM_COMNPRESSION_LEVEL.equals(paramName)) {
                     try {
                         compressionLevel = new Integer(request.getParameter(paramName));
-                        if (compressionLevel < 1 || compressionLevel > 10) {
-                            logger.info("invalid compression level (must be 1-10): " + compressionLevel + " using " + DEFAULT_COMPRESSION_LEVEL);
+                        if (compressionLevel < 1 || compressionLevel > 12) {
+                            logger.info("invalid compression level (must be 1-12): " + compressionLevel + " using " + DEFAULT_COMPRESSION_LEVEL);
                             compressionLevel = DEFAULT_COMPRESSION_LEVEL;
                         }
                     } catch (NumberFormatException nfe) {
@@ -282,6 +316,9 @@ public class PreviewServlet extends RESTfulServlet {
                     }
                 }
             }
+            if (previewTop != -1 && previewLeft != -1 && previewWidth != -1 && previewHeight != -1) {
+                crop = true;
+            }
 
             if (!ok) {
                 logger.info("Cannot generate preview for asset as requested");
@@ -315,21 +352,33 @@ public class PreviewServlet extends RESTfulServlet {
                         if (recordId > 0) {
                             //logger.debug("looking for preview called: '" + previewName + "' for record id: " + record.id + " using guid: " + fieldDescriptors.get(catalogName).get(PARAM_PREVIEWS_FIELD).guid);
                             if (PREVIEW_FULL.equals(previewName)) {
-                                preview = getBean().getAssetFullPreview(connection, recordId, cachePath);
+                                preview = getBean().getAssetFullPreview(connection, recordId, cacheFile);
                             } else if (PREVIEW_THUMBNAIL.equals(previewName) || PREVIEW_THUMB.equals(previewName)) {
                                 preview = getBean().getAssetThumbnail(connections.get(catalogName), recordId);
+                            } else if (maxSize && rotate) {
+                                preview = getBean().buildAssetMaxSizePreview(connection, recordId, compressionLevel, previewSize, rotateQuadrant, previewFormat, cacheFile);
                             } else if (maxSize) {
-                                preview = getBean().buildAssetMaxSizePreview(connection, recordId, compressionLevel, previewSize, previewFormat, cacheFile);
-                            } else {
+                                preview = getBean().buildAssetMaxSizePreview(connection, recordId, compressionLevel, previewSize, 0, previewFormat, cacheFile);
+                            } else if (crop) {
                                 String[] nameBits = previewName.split(":");
                                 if (nameBits.length > 1) {
-                                    preview = getBean().getAssetPreviewByName(connection, recordId, previewName, compressionLevel, previewFormat, cacheFile);
+                                    preview = getBean().getAssetPreviewByName(connection, recordId, previewName, compressionLevel, rotateQuadrant, previewFormat, cacheFile);
                                 } else {
-                                    preview = getBean().getAssetPreviewByName(connection, recordId, previewName, compressionLevel, previewTop, previewLeft, previewWidth, previewHeight, previewFormat, cacheFile);
+                                    preview = getBean().getAssetPreviewByName(connection, recordId, previewName, compressionLevel, previewTop, previewLeft, previewWidth, previewHeight, rotateQuadrant, previewFormat, cacheFile);
                                 }
+                            } else if (rotate) {
+                                preview = getBean().buildAssetRotatePreview(connection, recordId, compressionLevel, rotateQuadrant, previewFormat, cacheFile);
                             }
                             if (preview == null) {
                                 logger.info("failed to get preview: '" + previewName + "' for record id: " + recordId + " using guid: " + fieldDescriptors.get(catalogName).get(PARAM_PREVIEWS_FIELD).guid);
+                            } else {
+                                if (catalogPreview) {
+                                    DamAsset asset = new DamAsset();
+                                    // name should have contenxt, use source record id  (record name would be better but not available)
+                                    asset.name = id + "_" + previewName;
+                                    asset.data = preview;
+                                    DamRecord record = getBean().createAssetVariant(connection, previewParentId, asset, assetHandlingSet);
+                                }
                             }
                         } else {
                             logger.info("Cannot find record from URL: '" + request.getPathInfo() + " in catalog: " + connections.get(catalogName).catalogName);

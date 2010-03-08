@@ -75,7 +75,6 @@ public class MetadataServlet extends RESTfulServlet {
     public final static String JSON_FIELD_KEY_VALUE_INTERPRETATION = "valueInterpretation";
     public final static String RECORD_VIEWS = "Record_Views";
     public final static String CATEGORY_VIEWS = "Category_Views";
-    public final static String UTF_8 = "UTF-8";
     public final static String QUICK_SEARCH = "quicksearch";
     public final static String CONNECTIONS = "connections";
     // variables
@@ -153,7 +152,7 @@ public class MetadataServlet extends RESTfulServlet {
                     paramNames = request.getParameterNames();
                     while (paramNames.hasMoreElements()) {
                         String paramName = (String) paramNames.nextElement();
-                        // just checl for parameter existeice for output format - JSON is default
+                        // just check for parameter existeice for output format - JSON is default
                         if (URL_PARAM_JSON.equals(paramName)) {
                             describeOutputFormat = URL_PARAM_JSON;
                         } else if (URL_PARAM_CSHARP.equals(paramName)) {
