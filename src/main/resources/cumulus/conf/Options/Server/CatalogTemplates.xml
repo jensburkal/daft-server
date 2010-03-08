@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:list xmlns:ns="http://www.canto.com/XML/ns/Package/1.0">
+	<ns:record>
+		<ns:int32 ns:key="IDEF">0</ns:int32>
+		<ns:record ns:key="Desc">
+			<ns:string ns:key="%00%00%00%01">Adds to an existing catalog all fields required for User Commenting.</ns:string>
+			<ns:string ns:key="%00%00%00%02">Fügt einem vorhandenen Katalog alle Felder hinzu, die für die Benutzerkommentar-Funktion erforderlich sind.</ns:string>
+			<ns:string ns:key="%00%00%00%03">ユーザコメント用のすべてのフィールドを既存のカタログに追加します。</ns:string>
+			<ns:string ns:key="%00%00%00%04">Ajoute à un catalogue existant tous les champs nécessaires pour la gestion des Commentaires Utilisateur.</ns:string>
+			<ns:string ns:key="%00%00%00%07">Agrega a un catálogo de todos los campos necesarios para poder hacer Comentarios de Usuario.</ns:string>
+			<ns:string ns:key="%00%00%00%09">기존 카다로그에 사용자 설명을 위한 모든 필드를 추가합니다.</ns:string>
+		</ns:record>
+		<ns:int32 ns:key="Vers">524544</ns:int32>
+		<ns:string ns:key="SNam">Fields for Daft Locking</ns:string>
+		<ns:record ns:key="Layo">
+			<ns:int32 ns:key="CALS">0</ns:int32>
+			<ns:int32 ns:key="DAAC">0</ns:int32>
+			<ns:binary ns:key="CALO"></ns:binary>
+			<ns:int32 ns:key="UsJn">0</ns:int32>
+			<ns:list ns:key="CaFL">
+			</ns:list>
+			<ns:int32 ns:key="CUID">7</ns:int32>
+			<ns:int32 ns:key="SHAR">0</ns:int32>
+			<ns:int32 ns:key="PCTI">0</ns:int32>
+			<ns:int32 ns:key="Time">1</ns:int32>
+			<ns:int32 ns:key="KCUn">0</ns:int32>
+			<ns:int32 ns:key="ACCr">0</ns:int32>
+			<ns:list ns:key="ReFL">
+				<ns:record>
+					<ns:guid ns:key="GUID">{8CB03453-1376-4DA3-BAF1-BBBF230735F9}</ns:guid>
+					<ns:int32 ns:key="ISMD">1</ns:int32>
+					<ns:int32 ns:key="FTyp">1</ns:int32>
+					<ns:int32 ns:key="VInt">0</ns:int32>
+					<ns:int32 ns:key="OpFl">1</ns:int32>
+					<ns:int32 ns:key="Flgs">140</ns:int32>
+					<ns:int32 ns:key="Indx">1</ns:int32>
+					<ns:record ns:key="FNam">
+						<ns:string ns:key="%00%00%00%00">daft-locked</ns:string>
+					</ns:record>
+					<ns:list ns:key="LAFL">
+					</ns:list>
+					<ns:list ns:key="LMFL">
+					</ns:list>
+				</ns:record>
+				<ns:record>
+					<ns:guid ns:key="GUID">{7D38F904-E866-4655-8D52-CC5B8ABB8597}</ns:guid>
+					<ns:int32 ns:key="ISMD">1</ns:int32>
+					<ns:int32 ns:key="FTyp">0</ns:int32>
+					<ns:int32 ns:key="VInt">0</ns:int32>
+					<ns:int32 ns:key="OpFl">1</ns:int32>
+					<ns:int32 ns:key="Flgs">140</ns:int32>
+					<ns:int32 ns:key="Indx">1</ns:int32>
+					<ns:record ns:key="FNam">
+						<ns:string ns:key="%00%00%00%00">daft-locked-by</ns:string>
+					</ns:record>
+				</ns:record>
+				<ns:record>
+					<ns:guid ns:key="GUID">{D8BB0B6E-A51A-486A-BD4C-C01C2FB5C865}</ns:guid>
+					<ns:int32 ns:key="ISMD">1</ns:int32>
+					<ns:int32 ns:key="FTyp">4</ns:int32>
+					<ns:int32 ns:key="VInt">0</ns:int32>
+					<ns:int32 ns:key="OpFl">1</ns:int32>
+					<ns:int32 ns:key="Flgs">140</ns:int32>
+					<ns:int32 ns:key="Indx">1</ns:int32>
+					<ns:record ns:key="FNam">
+						<ns:string ns:key="%00%00%00%00">daft-locked-time</ns:string>
+					</ns:record>
+				</ns:record>
+				<ns:record>
+					<ns:guid ns:key="GUID">{F621CB44-0A6C-4CFD-AE31-067DBC7177E2}</ns:guid>
+					<ns:int32 ns:key="ISMD">1</ns:int32>
+					<ns:int32 ns:key="FTyp">7</ns:int32>
+					<ns:int32 ns:key="VInt">8</ns:int32>
+					<ns:int32 ns:key="OpFl">1</ns:int32>
+					<ns:int32 ns:key="Flgs">140</ns:int32>
+					<ns:int32 ns:key="Indx">1</ns:int32>
+					<ns:record ns:key="FNam">
+						<ns:string ns:key="%00%00%00%00">daft-locked-label</ns:string>
+					</ns:record>
+					<ns:record ns:key="SEVl">
+						<ns:record ns:key="%00%00%00%00">
+							<ns:bool ns:key="NEW%20">true</ns:bool>
+							<ns:string ns:key="%00%00%00%00">-16711936</ns:string>
+						</ns:record>
+						<ns:record ns:key="%00%00%00%01">
+							<ns:bool ns:key="NEW%20">true</ns:bool>
+							<ns:string ns:key="%00%00%00%00">-26368</ns:string>
+						</ns:record>
+					</ns:record>
+				</ns:record>
+			</ns:list>
+		</ns:record>
+	</ns:record>
+</ns:list>
