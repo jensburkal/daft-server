@@ -75,11 +75,10 @@ public class AssetServlet extends RESTfulServlet {
             } else if (pathElements.length < 4) {
                 logger.debug("Invalid URL - too few path elements");
             }
-            if (pathElements.length == 5) {
+            if (pathElements.length == 4) {
                 // catalog name, record id, operation
                 catalogName = pathElements[1];
-                userName = pathElements[2];
-                id = new Integer(pathElements[3]); // let it fail if not a number
+                id = new Integer(pathElements[2]); // let it fail if not a number
                 if (ASSET_GET.equals(pathElements[3])) {
                     op = Operations.DOWNLOAD;
                 } else if (ASSET_CHECKOUT.equals(pathElements[3])) {
@@ -126,8 +125,8 @@ public class AssetServlet extends RESTfulServlet {
                     //returnStatus = HttpServletResponse.SC_FORBIDDEN;
                     break;
                 case LOCK:
-                    userName = servletConfig.getInitParameter(URL_PARAM_USER);
-                    comment = servletConfig.getInitParameter(URL_PARAM_COMMENT);
+                    userName = request.getParameter(URL_PARAM_USER);
+                    comment = request.getParameter(URL_PARAM_COMMENT);
                     if (comment == null) {
                         comment = "";
                     }
@@ -148,8 +147,8 @@ public class AssetServlet extends RESTfulServlet {
                     }
                     break;
                 case UNLOCK:
-                    userName = servletConfig.getInitParameter(URL_PARAM_USER);
-                    comment = servletConfig.getInitParameter(URL_PARAM_COMMENT);
+                    userName = request.getParameter(URL_PARAM_USER);
+                    comment = request.getParameter(URL_PARAM_COMMENT);
                     if (comment == null) {
                         comment = "";
                     }

@@ -5,9 +5,6 @@
 package com.daftsolutions.daft.server.servlets;
 
 import com.daftsolutions.lib.log.EventLogger;
-import com.daftsolutions.lib.ws.dam.DamAsset;
-import com.daftsolutions.lib.ws.dam.DamConnectionInfo;
-import com.daftsolutions.lib.ws.dam.DamRecordLock;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -90,8 +87,9 @@ public class LogServlet extends RESTfulServlet {
             ServletConfig servletConfig = getServletConfig();
             switch (op) {
                 case LOG:
-                    String message = request.getParameter(URL_PARAM_MESSAGE);
+                  String message = request.getParameter(URL_PARAM_MESSAGE);
                     String status = request.getParameter(URL_PARAM_STATUS);
+                    if (status == null) status = EventLogger.StatusValues.UNKNOWN.toString();
                     String userName = request.getParameter(URL_PARAM_USER);
                     if (userName == null) userName = "";
                     String comment = request.getParameter(URL_PARAM_COMMENT);
