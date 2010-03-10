@@ -31,7 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- *
+ *arp
  * @author Colin Manning
  */
 public class MetadataServlet extends RESTfulServlet {
@@ -684,11 +684,22 @@ public class MetadataServlet extends RESTfulServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    private String makeCsharpClass(String viewName, String className, DamFieldDescriptor[] fieldDescriptors, SimpleEntry[] urls) throws Exception {
+    /**
+     * make a C# class, replacing " " characters with "_" combinations to make the class variable names legal (althugh maybe not very useful)
+     * field names in the DAM database should be normalised to be sensible
+     * @param viewNamese
+     * @param className
+     * @param fieldDescriptors
+     * @param urls
+     * @return
+     * @throws Exception
+     */
+    protected String makeCsharpClass(String viewName, String className, DamFieldDescriptor[] fieldDescriptors, SimpleEntry[] urls) throws Exception {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
-        printWriter.println("   public class Metadata_" + className + " : CumulusAsset");
+        printWriter.println("   public class Metadata_" + className + " : DamAsset");
         printWriter.println("   {");
+
         printWriter.println("      public const string VIEW_NAME = \"" + viewName + "\";");
         printWriter.println("");
         for (DamFieldDescriptor field : fieldDescriptors) {
@@ -697,6 +708,7 @@ public class MetadataServlet extends RESTfulServlet {
                 continue;
             }
 
+            // replace " " withh "_"
             String varName = firstLower(field.name).replaceAll(" ", "_");
             String varType = getCsharpType(field);
             printWriter.println("      public " + varType + " " + firstUpper(varName) + " { get; set; }");
@@ -781,13 +793,13 @@ public class MetadataServlet extends RESTfulServlet {
             case CumulusFieldTypes.FieldTypeEnum:
                 switch (field.valueInterpretation) {
                     case CumulusFieldTypes.VALUE_INTERPRETATION_DEFAULT:
-                        result = "CumulusStringEnum";
+                        result = "DamStringEnum";
                         break;
                     case CumulusFieldTypes.VALUE_INTERPRETATION_STRING_ENUM_MULTIPLE_VALUES:
-                        result = "CumulusStringEnum[]";
+                        result = "DamStringEnum[]";
                         break;
                     case CumulusFieldTypes.VALUE_INTERPRETATION_STRING_ENUM_LABEL:
-                        result = "CumulusStringEnumLabel";
+                        result = "DamStringEnumLabel";
                         break;
                     default:
                         break;

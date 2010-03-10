@@ -318,6 +318,8 @@ public class PreviewServlet extends RESTfulServlet {
             }
             if (previewTop != -1 && previewLeft != -1 && previewWidth != -1 && previewHeight != -1) {
                 crop = true;
+            } else if (previewWidth != -1 && previewHeight != -1) {
+                crop = true;
             }
 
             if (!ok) {
@@ -457,6 +459,6 @@ public class PreviewServlet extends RESTfulServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Daft.Server PreviewServlet for Cumulus";
+        return "Daft.Server PreviewServlet";
     }
 }

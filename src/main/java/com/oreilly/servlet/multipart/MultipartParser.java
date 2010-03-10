@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletInputStream;
+import org.apache.log4j.Logger;
 
 /** 
  * A utility class to handle <code>multipart/form-data</code> requests,
@@ -69,6 +70,7 @@ import javax.servlet.ServletInputStream;
  */
 public class MultipartParser {
 
+    private static Logger logger = Logger.getLogger(MultipartParser.class);
     /** input stream to read parts from */
     private ServletInputStream in;
     /** MIME boundary that delimits parts */
@@ -79,7 +81,7 @@ public class MultipartParser {
     private byte[] buf = new byte[8 * 1024];
     /** default encoding */
     private static String DEFAULT_ENCODING = "ISO-8859-1";
-     /** preferred encoding */
+    /** preferred encoding */
     private String encoding = DEFAULT_ENCODING;
 
     /**
@@ -165,8 +167,8 @@ public class MultipartParser {
             type = (type1.length() > type2.length() ? type1 : type2);
         }
 
-        if (type == null ||
-                !type.toLowerCase().startsWith("multipart/form-data")) {
+        if (type == null
+                || !type.toLowerCase().startsWith("multipart/form-data")) {
             throw new IOException("Posted content type isn't multipart/form-data");
         }
 
@@ -252,7 +254,7 @@ public class MultipartParser {
         Vector headers = new Vector();
 
         String line = readLine();
-        System.out.println("COLIN got line: "+line+" - encoding is "+encoding);
+        logger.debug("got line: " + line + " - encoding is " + encoding);
         if (line == null) {
             // No parts left, we're done
             return null;
@@ -399,6 +401,7 @@ public class MultipartParser {
         // Get the filename, if given
         String filename = null;
         String origname = null;
+        logger.debug("got line: " + line);
         start = line.indexOf("filename=\"", end + 2);  // start after name
         end = line.indexOf("\"", start + 10);          // skip filename=\"
         if (start != -1 && end != -1) {                // note the !=
@@ -410,7 +413,7 @@ public class MultipartParser {
                 filename = filename.substring(slash + 1);  // past last slash
             }
         }
-        System.out.println("COLIN got filename: "+filename);
+        logger.debug("got filename: " + filename);
 
         // Return a String array: disposition, name, filename
         // empty filename denotes no file posted!
