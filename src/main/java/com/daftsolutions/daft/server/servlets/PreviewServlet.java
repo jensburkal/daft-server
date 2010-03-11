@@ -44,6 +44,7 @@ public class PreviewServlet extends RESTfulServlet {
     public final static String URL_PARAM_FORCE = "force";
     public final static String URL_PARAM_CATALOG = "catalog";
     public final static String URL_PARAM_PARENT = "parent";
+    public final static String URL_PARAM_PREVIEW_NAME = "previewName";
     public final static String URL_PARAM_ASSET_HANDLING_SET = "assetHandlingSet";
     public final static String PARAM_PREFIX_FIELD = "field";
     public final static String PARAM_PREVIEWS_FIELD = "previews";
@@ -67,6 +68,7 @@ public class PreviewServlet extends RESTfulServlet {
     protected String previewFormat = DEFAULT_PREVIEW_FORMAT;
     protected boolean forcePreview = false;
     protected int compressionLevel = DEFAULT_COMPRESSION_LEVEL;
+    protected String cachePreviewName = null;
 
     /**
      *
@@ -228,6 +230,7 @@ public class PreviewServlet extends RESTfulServlet {
             previewHeight = 0;
             previewFormat = DEFAULT_PREVIEW_FORMAT;
             forcePreview = false;
+            cachePreviewName = null;
             Enumeration paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
                 String paramName = (String) paramNames.nextElement();
@@ -239,6 +242,10 @@ public class PreviewServlet extends RESTfulServlet {
                         logger.info("invalid preview max size: " + request.getParameter(paramName));
                         ok = false;
                     }
+                } else if (URL_PARAM_PREVIEW_NAME.equals(paramName)) {
+                    // for cache clearing
+                    cachePreviewName = request.getParameter(paramName);
+                    logger.debug("cache preview name: "+cachePreviewName);
                 } else if (URL_PARAM_ROTATE.equals(paramName)) {
                     try {
                         rotateQuadrant = new Integer(request.getParameter(paramName));
@@ -318,10 +325,9 @@ public class PreviewServlet extends RESTfulServlet {
             }
             if (previewTop != -1 && previewLeft != -1 && previewWidth != -1 && previewHeight != -1) {
                 crop = true;
-            } else if (previewWidth != -1 && previewHeight != -1) {
+            } else if (previewWidth > 0 && previewHeight > 0) {
                 crop = true;
             }
-
             if (!ok) {
                 logger.info("Cannot generate preview for asset as requested");
                 returnStatus = HttpServletResponse.SC_NOT_FOUND;
@@ -332,8 +338,8 @@ public class PreviewServlet extends RESTfulServlet {
                 byte[] preview = null;
                 cachePath = previewCacheManager.makeCachePath(catalogName, fieldId, id);
                 if (doClearCache) {
-                    logger.info("Clearing cache of files for asset with id: " + id);
-                    previewCacheManager.clearPathForRecord(cachePath, id);
+                    //logger.info("Clearing cache of files for asset with id: " + id);
+                    previewCacheManager.clearPathForRecord(cachePath, id, cachePreviewName);
                 } else {
                     cacheFile = previewCacheManager.makeCacheFile(cachePath, id, previewName, forcePreview);
                     if (cacheFile.exists()) {

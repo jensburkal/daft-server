@@ -219,6 +219,17 @@ public class MetadataServlet extends RESTfulServlet {
                         if (QUICK_SEARCH.equals(queryName)) {
                             quickSearch = true;
                             quickSearchText = request.getParameter(URL_PARAM_TEXT);
+                            if (request.getParameter(URL_PARAM_CATEGORY_ID) != null) {
+                                // quick search to be made within a category base collection
+                                try {
+                                    categoryId = new Integer(request.getParameter(URL_PARAM_CATEGORY_ID));
+                                } catch (NumberFormatException nfe1) {
+                                    // ignore
+                                }
+                            }
+                            else {
+                                categoryId = null;
+                            }
                         } else {
                             String queryTemplate = queries.get(queryName);
                             if (queryTemplate != null) {
@@ -484,7 +495,11 @@ public class MetadataServlet extends RESTfulServlet {
                     DamFieldDescriptor[] queryFieldDescriptors = fieldDescriptors.get(catalogName).get(viewName);
                     DamRecordCollection recordCollection = null;
                     if (quickSearch) {
+                        if (categoryId != null) {
+                        recordCollection = getBean().findCategoryRecords(connection, queryFieldDescriptors, categoryId, quickSearchText, fromIndex, count, Locale.getDefault().getDisplayName());
+                        } else {
                         recordCollection = getBean().findRecordsByQuickSearch(connection, queryFieldDescriptors, quickSearchText, fromIndex, count, Locale.getDefault().getDisplayName());
+                        }
                     } else {
                         logger.debug("Query is: " + query);
                         recordCollection = getBean().findRecords(connection, queryFieldDescriptors, query, fromIndex, count, Locale.getDefault().getDisplayName());

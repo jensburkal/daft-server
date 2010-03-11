@@ -218,25 +218,20 @@ public class UploadServlet extends HttpServlet {
                     }
                     assets = new Vector<DamAsset>();
                     while ((part = parser.readNextPart()) != null) {
-                        logger.debug("processing form part with name: '" + part.getName() + "'");
                         if (part.isFile()) {
                             FilePart filePart = (FilePart) part;
                             String fileName = filePart.getFileName();
-                            logger.debug(" - upload file name: '" + fileName + "'");
                             if (fileName == null) {
                                 // no file specified in an input field, so ignore
                                 continue;
                             }
-                            logger.debug("uploading file '" + fileName + "'");
                             DamAsset asset = new DamAsset();
                             asset.name = fileName;
                             asset.data = Utilities.getBytesFromInputStream(filePart.getInputStream());
                             assets.add(asset);
-                            logger.debug(" --- asset size is: " + asset.data.length);
                         } else if (part.isParam()) {
                             ParamPart paramPart = (ParamPart) part;
                             String paramName = paramPart.getName();
-                            logger.debug(" - processing param part: "+paramName);
                             //logger.debug("processing form param part with name: '" + paramName + "', value: '" + paramPart.getStringValue(ENCODING_UTF_8) + "'");
                             if (PARAM_PREFIX_ASSET_HANDLING_SET.equals(paramName)) {
                                 assetHandlingSet = paramPart.getStringValue(ENCODING_UTF_8);
